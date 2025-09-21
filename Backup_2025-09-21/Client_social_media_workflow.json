@@ -1,0 +1,1257 @@
+{
+  "createdAt": "2025-09-21T18:32:03.345Z",
+  "updatedAt": "2025-09-21T18:32:03.345Z",
+  "id": "ycQNCskIPgh7P63y",
+  "name": "Client_social_media_workflow",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Provide Your Topic",
+        "formDescription": "This form is a Trigger node to start the social media automation work flow.\n",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Topic",
+              "placeholder": "Write your post Topic here.",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Keywords or Hashtags (optional)",
+              "placeholder": "Include any specific keywords or hashtags you'd like the AI to incorporate into the post. This ensures the content aligns with your branding and campaign objectives."
+            },
+            {
+              "fieldLabel": "Link (Optional)",
+              "placeholder": "Provide the URL of any product, service, form, support page, or other resource. This link will be included in the generated post to direct your audience to the relevant content."
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Generate Social Media Post and Publish"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        240
+      ],
+      "id": "c03ab94c-510c-4f1e-84e0-6dd9b4a78a4b",
+      "name": "On form submission",
+      "webhookId": "ded52446-c96a-4bef-a3bb-e130f4507f01"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        448,
+        416
+      ],
+      "id": "e3d9bf8b-94e3-401d-b466-b6b3649401f7",
+      "name": "SerpAPI"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a **content creation AI** for SterkWeb.com, a leading digital marketing agency which provides **Business Ai Automation, seo, web designing and development, content writing, etc. services**.\n\nYour goal is to craft **engaging, platform-specific content** for LinkedIn, Instagram, Facebook, Twitter (X), TikTok, Threads, and YouTube Shorts. Each post must align with the platform’s audience preferences, tone, and style while reflecting sterkweb.com's expertise. The content should provide **value-driven insights**, tutorials, reviews, and discussions that resonate with professionals, Business owners, business, marketers and local businesses.\n\n### Key Objectives:\n1. **Platform Optimization**: Tailor content format, tone, and hashtags to suit each platform’s algorithm and audience engagement patterns.\n2. **SEO & Hashtags**: Use a mix of general automation hashtags and trending platform-specific hashtags to maximize reach.\n3. **Engagement Focus**: Create content that sparks interaction through tutorials, comparisons, reviews, or thought-provoking discussions.\n4. **Consistency**: Maintain a professional yet approachable tone across all platforms while adapting to audience needs.\n5. **Data-Driven Strategy**: Analyze trends and performance data to refine content strategy and hashtag usage.\n\n### General Hashtags:\n#sterkweb #aiautomation #jitendraaiautomation #seo #website #localbusiness #google #digitalmarketing\n\n---\n\n### Platform-Specific Guidelines:\n\n#### 1. LinkedIn\n   - **Style**: Professional and insightful.\n   - **Tone**: Business-oriented; focus on automation use cases, industry insights, and community impact.\n   - **Content Length**: 3-4 sentences; concise but detailed.\n   - **Hashtags**: #contentcreation #Automation #WorkflowSolutions #DigitalTransformation #digitalmarketing\n   - **Call to Action (CTA)**: Encourage comments or visits to sterkweb.com’s website for more insights.\n\n#### 2. Instagram\n   - **Style**: Visual storytelling with creative captions.\n   - **Tone**: Inspirational and engaging; use emojis for relatability.\n   - **Content Length**: 2-3 sentences paired with eye-catching visuals (e.g., infographics or workflow demos).\n   - **Visuals**: Showcase milestones (e.g., new workflow launches), tutorials, or product highlights.\n   - **CTA**: Use phrases like \"Swipe to learn more,\" \"Tag your team,\" or \"Check out the link below!\"\n   - **Link Placement**: Add the provided link before hashtags; if no link is provided, use \"Visit our website: https://sterkweb.com.\"\n   - **Hashtags**: #AutomationLife #TechInnovation #WorkflowTips #digitalmarketing #seo #jitendraaiautomation \n\n#### 3. Facebook\n   - **Style**: Friendly and community-focused.\n   - **Tone**: Relatable; highlight user success stories or company achievements in automation.\n   - **Content Length**: 2-3 sentences; conversational yet professional.\n   - **Hashtags**: #SmallBusinessAutomation #Entrepreneurship #digitalmarketing #WorkflowInnovation #aiautomation\n   - **CTA**: Encourage likes, shares, comments (e.g., “What’s your favorite automation tip?”).\n\n#### 4. Twitter (X)\n   - **Style**: Concise and impactful.\n   - **Tone**: Crisp and engaging; spark curiosity in 150 characters or less.\n   - **Hashtags**: #WorkflowTrends #AIWorkflows #AutomationTips #jitendraaiautomation\n   - **CTA**: Drive quick engagement through retweets or replies (e.g., “What’s your go-to n8n workflow?”).\n\n---\n\n### Content Creation Workflow:\nFor every post:\n1. Use the following input fields:\n    - Topic/About the Post: {{ $json.Topic }}\n    - Keywords/Focus Areas: {{ $json.formMode }}\n    - Link (optional): {{ $json['Link (optional)'] }}\n2. Adapt the tone/style based on the platform guidelines above.\n\nEnsure every post reflects sterkweb.com's mission of delivering high-quality automation insights while maximizing engagement across platforms.\n\nFollow the provided JSON schema for your reponse.\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a content creation AI for SterkWeb.com.\n\nINSTRUCTIONS:\n- Respond ONLY with a valid JSON object that exactly matches the provided schema.  \n- Do NOT add any explanations, comments, or text outside the JSON.  \n- Do NOT use markdown code fences (no `````` lines).  \n- Every property in the schema must be present even if empty (e.g., empty arrays or empty strings).  \n- Match property names and data types exactly as specified (e.g., integers as integers, arrays as arrays).\n- RESPOND only with the JSON object starting with { and ending with } and nothing else.\n\nSchema:\n{\n\"type\": \"object\",\n\"properties\": {\n  \"name\": { \"type\": \"string\" },\n  \"description\": { \"type\": \"string\" },\n  \"platform_posts\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"LinkedIn\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"image_suggestion\": { \"type\": \"string\" },\n          \"post\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"call_to_action\": { \"type\": \"string\" }\n        }\n      },\n      \"Instagram\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"image_suggestion\": { \"type\": \"string\" },\n          \"caption\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"emojis\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"call_to_action\": { \"type\": \"string\" }\n        }\n      },\n      \"Facebook\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"post\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"call_to_action\": { \"type\": \"string\" },\n          \"image_suggestion\": { \"type\": \"string\" }\n        }\n      },\n      \"X-Twitter\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"video_suggestion\": { \"type\": \"string\" },\n          \"image_suggestion\": { \"type\": \"string\" },\n          \"post\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"character_limit\": { \"type\": \"integer\" }\n        }\n      }\n    }\n  },\n  \"additional_notes\": { \"type\": \"string\" }\n}\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        240
+      ],
+      "id": "f081ca14-c4ec-43cf-95eb-d4eb63f68d02",
+      "name": "Social Media Content Factory",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        416
+      ],
+      "id": "93c3c830-2e6b-422a-bbef-9c8138f0f84b",
+      "name": "GPT 4o LLM"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\"type\": \"object\",\n\"properties\": {\n  \"name\": { \"type\": \"string\" },\n  \"description\": { \"type\": \"string\" },\n  \"platform_posts\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"LinkedIn\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"image_suggestion\": { \"type\": \"string\" },\n          \"post\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"call_to_action\": { \"type\": \"string\" }\n        }\n      },\n      \"Instagram\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"image_suggestion\": { \"type\": \"string\" },\n          \"caption\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"emojis\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"call_to_action\": { \"type\": \"string\" }\n        }\n      },\n      \"Facebook\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"post\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"call_to_action\": { \"type\": \"string\" },\n          \"image_suggestion\": { \"type\": \"string\" }\n        }\n      },\n      \"X-Twitter\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"video_suggestion\": { \"type\": \"string\" },\n          \"image_suggestion\": { \"type\": \"string\" },\n          \"post\": { \"type\": \"string\" },\n          \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"character_limit\": { \"type\": \"integer\" }\n        }\n      }\n    }\n  },\n  \"additional_notes\": { \"type\": \"string\" }\n}\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        416
+      ],
+      "id": "8539254d-289a-4d3f-bc92-a21901ebb09c",
+      "name": "Social Media Content"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate clean, modern HTML email content from the provided JSON data with these requirements:\n- Use table-based layout with inline CSS for email compatibility\n- Create card sections for each platform containing:\n  • Title header (20px) \n  • Post content (16px) \n  • Video/image suggestions (italic 14px)\n  • Hashtag list (inline-block with # prefix)\n  • Emoji preservation where present\n  • Call-to-action (bold 14px)\n- Structure using:\n  • 600px max-width container\n  • 20px padding between cards\n  • Left-aligned text hierarchy\n  • Arial/sans-serif font stack\n  • Email-safe colors (#333 text, #555 secondary)\n- Include all platform-specific elements:\n  ▶ Video/image suggestions in italic\n  ▶ Hashtags as linked search terms\n  ▶ Emojis in original positions\n  ▶ Character limits for Twitter\n  ▶ Platform-specific CTAs\n  ▶ Visual quality reminders\n- Format hashtags as:\n  <span\n  style=\"\n    display: inline-block;\n    background: #f0f0f0;\n    padding: 2px 6px;\n    margin: 2px;\n    border-radius: 4px;\n  \"\n  >#tag</span\n>\n\nInput data: {{ $json.output.toJsonString() }}\n\nRemove ALL code blocks and comments. Output ONLY the raw HTML with:\n- Platform cards in JSON order\n- All data elements represented\n- Mobile-responsive tables\n- W3C-valid markup\n\n## Example HTML:\n<table\n  width=\"100%\"\n  cellpadding=\"0\"\n  cellspacing=\"0\"\n  style=\"\n    background-color: #fbfcfe;\n    border: 1px solid #dbdfe7;\n    border-radius: 8px;\n  \"\n>\n  <tbody>\n    <tr>\n      <td align=\"center\" style=\"padding: 24px 0\">\n        <table\n          width=\"448\"\n          cellpadding=\"0\"\n          cellspacing=\"0\"\n          border=\"0\"\n          style=\"\n            width: 100%;\n            max-width: 448px;\n            background-color: #ffffff;\n            border: 1px solid #dbdfe7;\n            border-radius: 8px;\n            padding: 24px;\n          \"\n        >\n          <tbody>\n            <tr>\n              <td\n                style=\"\n                  text-align: center;\n                  padding-top: 8px;\n                  font-family: Arial, sans-serif;\n                  font-size: 14px;\n                  color: #7e8186;\n                \"\n              >\n                <p style=\"white-space: pre-line\"></p>\n                <table\n                  width=\"100%\"\n                  cellpadding=\"0\"\n                  cellspacing=\"0\"\n                  style=\"\n                    max-width: 600px;\n                    font-family: Arial, sans-serif;\n                    color: #333;\n                  \"\n                >\n                  <tbody>\n                    <tr>\n                      <td style=\"padding: 20px\">\n                        <table\n                          width=\"100%\"\n                          cellpadding=\"0\"\n                          cellspacing=\"0\"\n                          style=\"\n                            background-color: #f9f9f9;\n                            margin-bottom: 20px;\n                            padding: 20px;\n                            border-radius: 8px;\n                          \"\n                        >\n                          <tbody>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 20px;\n                                  font-weight: bold;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                LinkedIn\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 16px; padding-bottom: 10px\">\n                                Discover why n8n stands out as the premier\n                                workflow automation tool. Its flexibility and\n                                open-source nature empower businesses to create\n                                custom solutions that drive efficiency and\n                                innovation.\n                              </td>\n                            </tr>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 14px;\n                                  font-style: italic;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                Video/Image suggestion pending\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"padding-bottom: 10px\">\n                                <span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#Innovation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#Automation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />WorkflowSolutions</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />DigitalTransformation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />Leadership</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#sterkweb</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#n8n</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />AIWorkflows</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#WorkflowAutomation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  ><wbr />#TechSolutions</span\n                                >\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 14px; font-weight: bold\">\n                                Visit workflows.diy to explore how n8n can\n                                transform your business processes!\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                        <table\n                          width=\"100%\"\n                          cellpadding=\"0\"\n                          cellspacing=\"0\"\n                          style=\"\n                            background-color: #f9f9f9;\n                            margin-bottom: 20px;\n                            padding: 20px;\n                            border-radius: 8px;\n                          \"\n                        >\n                          <tbody>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 20px;\n                                  font-weight: bold;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                Instagram\n                              </td>\n                            </tr>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 14px;\n                                  font-style: italic;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                Eye-catching infographic comparing n8n to other\n                                automation tools, highlighting its unique\n                                features.\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 16px; padding-bottom: 10px\">\n                                n8n: The ultimate workflow automation tool!\n                                <img\n                                  data-emoji=\"💡\"\n                                  class=\"an1\"\n                                  alt=\"💡\"\n                                  aria-label=\"💡\"\n                                  draggable=\"false\"\n                                  src=\"https://fonts.gstatic.com/s/e/notoemoji/16.0/1f4a1/32.png\"\n                                  loading=\"lazy\"\n                                />\n                                Unlock limitless possibilities with its\n                                open-source platform. Boost your productivity\n                                and streamline your processes.\n                                <img\n                                  data-emoji=\"💤\"\n                                  class=\"an1\"\n                                  alt=\"💤\"\n                                  aria-label=\"💤\"\n                                  draggable=\"false\"\n                                  src=\"https://fonts.gstatic.com/s/e/notoemoji/16.0/1f4a4/32.png\"\n                                  loading=\"lazy\"\n                                />\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"padding-bottom: 10px\">\n                                <span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#AutomationLife</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#TechInnovation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  ><wbr />#WorkflowTips</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#Programming</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />Engineering</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#sterkweb</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#n8n</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />AIWorkflows</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#WorkflowAutomation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  ><wbr />#TechSolutions</span\n                                >\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 14px; font-weight: bold\">\n                                Visit our website:\n                                <a\n                                  href=\"https://n8n.io/\"\n                                  target=\"_blank\"\n                                  data-saferedirecturl=\"https://www.google.com/url?q=https://n8n.io/&amp;source=gmail&amp;ust=1741030878129000&amp;usg=AOvVaw1Nr6ek3eGwe94zlbPaJrzT\"\n                                  >https://n8n.io/</a\n                                >\n                                #AutomationLife #TechInnovation #WorkflowTips\n                                #Programming #Engineering\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                        <table\n                          width=\"100%\"\n                          cellpadding=\"0\"\n                          cellspacing=\"0\"\n                          style=\"\n                            background-color: #f9f9f9;\n                            margin-bottom: 20px;\n                            padding: 20px;\n                            border-radius: 8px;\n                          \"\n                        >\n                          <tbody>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 20px;\n                                  font-weight: bold;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                Facebook\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 16px; padding-bottom: 10px\">\n                                See why businesses are choosing n8n for their\n                                workflow automation needs. From its\n                                user-friendly interface to its powerful\n                                customization options, n8n is revolutionizing\n                                how companies approach automation.\n                              </td>\n                            </tr>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 14px;\n                                  font-style: italic;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                A visually appealing graphic showcasing n8n's\n                                key features and benefits.\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"padding-bottom: 10px\">\n                                <span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#SmallBusinessAutomation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />Entrepreneurship</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#Leadership</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />WorkflowInnovation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />sterkweb</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#n8n</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#AIWorkflows</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />WorkflowAutomation</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />TechSolutions</span\n                                >\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 14px; font-weight: bold\">\n                                What's your favorite automation tip? Share in\n                                the comments!\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                        <table\n                          width=\"100%\"\n                          cellpadding=\"0\"\n                          cellspacing=\"0\"\n                          style=\"\n                            background-color: #f9f9f9;\n                            margin-bottom: 20px;\n                            padding: 20px;\n                            border-radius: 8px;\n                          \"\n                        >\n                          <tbody>\n                            <tr>\n                              <td\n                                style=\"\n                                  font-size: 20px;\n                                  font-weight: bold;\n                                  padding-bottom: 10px;\n                                \"\n                              >\n                                Twitter\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"font-size: 16px; padding-bottom: 10px\">\n                                n8n: The best #WorkflowAutomation tool!\n                                Open-source, customizable, and powerful.\n                                Transform your business processes today!\n                              </td>\n                            </tr>\n                            <tr>\n                              <td style=\"padding-bottom: 10px\">\n                                <span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#WorkflowTrends</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#AIWorkflows</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />AutomationTips</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#NoCodeSolutions</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  ><wbr />#sterkweb</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#n8n</span\n                                ><span\n                                  style=\"\n                                    display: inline-block;\n                                    background: #f0f0f0;\n                                    padding: 2px 6px;\n                                    margin: 2px;\n                                    border-radius: 4px;\n                                  \"\n                                  >#<wbr />TechSolutions</span\n                                >\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                      </td>\n                    </tr>\n                  </tbody>\n                </table>\n                <p></p>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </td>\n    </tr>\n  </tbody>\n</table>",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        1264,
+        240
+      ],
+      "id": "9864240c-afdc-4c0d-83ea-83ef5476136f",
+      "name": "Prepare Content Review Email"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        400
+      ],
+      "id": "16465a9c-c51e-4e51-89e5-b630dc7a2cb6",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "sterkwebservices@gmail.com",
+        "subject": "=🔥FOR APPROVAL🔥{{ $('Social Media Content Factory').item.json.output.name }} - {{ $('Social Media Content Factory').item.json.output.description }}",
+        "message": "={{ $json.output }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 45,
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1856,
+        416
+      ],
+      "id": "14886136-8526-41b1-9a84-eef5bc4f1f39",
+      "name": "Gmail User for Approval",
+      "webhookId": "6d169296-243b-48a1-9bed-14714fae353e"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2df4b039-9776-4e1a-8c61-4235617e3165",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        864
+      ],
+      "id": "ff8401d4-865b-456c-923e-cb930db75454",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output.platform_posts.LinkedIn.post }}",
+        "options": {
+          "systemMessage": "** Purpose **\n- You are an AI agent designed to convert LinkedIn posts into visual prompt descriptions. These prompts guide the creation of compelling marketing graphics that visually enhance the written message and align with professional branding standards.\n\n\n** Goals **\n\n- Analyze the content of the LinkedIn post\n\n- Identify the core message, insight, or idea\n\n- Craft a visual prompt that represents the message in a striking and brand-consistent way\n\n- Ensure the prompt is ideal for generating a professional marketing-style graphic, not a literal or hyperrealistic image\n\n\n** Visual Criteria **\nYour graphic prompt must:\n\n- Visually support or represent the key idea from the post\n\n- Be suitable for a modern LinkedIn post (clean, professional, polished)\n\n- Reflect a current design aesthetic (flat, minimalist, creative, sharp)\n\n\n** Output Requirements **\n\n- Output only the final image prompt — no explanation, rephrasing of the post, or surrounding text\n\n- Never include placeholders like \"Header goes here\"\n\n- Include numeric stats or figures if present in the original post\n\n- Do not include quotation marks around the prompt\n\n- Output should be ready to use in a text-to-image tool\n\n\n** Design Style & Elements **\nThink like a professional brand designer or marketing creative. Your visual prompts may include:\n\n- Flat illustrations\n\n- Bold or minimal typography elements (described in the prompt)\n\n- Infographic components (charts, graphs, percentages)\n\n- Modern abstract shapes or gradients\n\n- Metaphors (e.g., lightbulb for ideas, mountain for growth)\n\n- Layout suggestions (e.g., “split-screen layout,” “centered title with subtle overlay”)\n\nOptional: soft shadows, motion-like lines, UI-style elements\n\n\n** Prompt Format Example **\nModern flat-design illustration of a glowing lightbulb emerging from a maze, symbolizing innovation through complexity. Clean background with soft gradient, top-right space for headline text, subtle data overlay on the left side."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        832,
+        240
+      ],
+      "id": "288843ae-6393-4b8a-ab4d-ff30b4a93cb0",
+      "name": "Create Image Prompt"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        400
+      ],
+      "id": "3c066561-3772-4087-9db8-f0bbba5686e5",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $('Create Image Prompt').item.json.output }}",
+        "options": {
+          "returnImageUrls": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        560,
+        848
+      ],
+      "id": "689a1019-6173-459d-b3cd-abd14bb27124",
+      "name": "Generate an image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/YOUR_PAGE_ID/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "=https://ucarecdn.com/{{ $json.data }}/data"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('Social Media Content Factory').item.json.output.platform_posts.Instagram.caption }}{{ $('Social Media Content Factory').item.json.output.platform_posts.Instagram.hashtags }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        848
+      ],
+      "id": "d8ce43be-2c20-4654-94e8-ed1336c9b5e4",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "=YOUR_PAGE_ID",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "name": "image_url",
+                "value": "=https://ucarecdn.com/{{ $json.data }}/data"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1536,
+        1104
+      ],
+      "id": "ae819375-9e62-4e95-926c-d9ea0addfd7d",
+      "name": "Facebook Graph API"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Social Media Content Factory').item.json.output.platform_posts.Facebook.post }}\n{{ $('Social Media Content Factory').item.json.output.platform_posts.Facebook.hashtags }}\n{{ $('Social Media Content Factory').item.json.output.platform_posts.Facebook.call_to_action }}"
+              },
+              {
+                "name": "link",
+                "value": "={{ $('On form submission').item.json['Link (Optional)'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        1536
+      ],
+      "id": "2e7b3ef6-5d8f-4d10-baa6-30374d28ed8a",
+      "name": "Facebook Graph API1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1248,
+        1552
+      ],
+      "id": "3601b5a4-6d72-4e9a-9293-bb2a0d20061e",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "person": "1eEsqRN1P0",
+        "text": "={{ $('Social Media Content Factory').item.json.output.platform_posts.LinkedIn.post }}\n\n{{ $('Social Media Content Factory').item.json.output.platform_posts.LinkedIn.call_to_action }}\n{{ $('On form submission').item.json['Link (Optional)'] }}\n\n{{ $('Social Media Content Factory').item.json.output.platform_posts.LinkedIn.hashtags }}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        1728
+      ],
+      "id": "fb01b99b-4887-4528-ae9f-9f53c468362f",
+      "name": "Create a post"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://upload.uploadcare.com/base/",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "UPLOADCARE_PUB_KEY",
+              "value": "ADD_YOUR_UPLOADCARE_KEY"
+            },
+            {
+              "name": "UPLOADCARE_STORE",
+              "value": "auto"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        848
+      ],
+      "id": "0afeee8a-56a3-4635-98bc-255176a1301c",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "content": "## Step 7️⃣: Format Results",
+        "height": 880,
+        "width": 300,
+        "color": 5
+      },
+      "id": "ce7bb0bf-5942-4cec-8aa5-90931b760e80",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1744,
+        1024
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Step 6️⃣: Publish to Social Media",
+        "height": 1148,
+        "width": 300,
+        "color": 6
+      },
+      "id": "012505a2-3219-41f9-84fc-5c53f422ba58",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1408,
+        752
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c6edc76-1e3b-45b0-8baa-33a14c678150",
+              "name": "Instagram Post Result",
+              "type": "string",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2f1868d6-2d6f-45c9-8bdd-b5c60fac9bfd",
+      "name": "Instagram Result1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1808,
+        1104
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c6edc76-1e3b-45b0-8baa-33a14c678150",
+              "name": "X Post Result",
+              "type": "string",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ff69495-4677-4819-b245-9d1f273c67c5",
+      "name": "X Result1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1808,
+        1344
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c6edc76-1e3b-45b0-8baa-33a14c678150",
+              "name": "Facebook Post Result",
+              "type": "string",
+              "value": "={{ $json }}"
+            },
+            {
+              "id": "0b58ae3b-d3e6-4327-bc84-d286407c0cf6",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4359c0fc-2739-4e4f-a4be-c9f561868347",
+      "name": "Facebook Result1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1808,
+        1536
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c6edc76-1e3b-45b0-8baa-33a14c678150",
+              "name": "LinkedIn Post Result",
+              "type": "string",
+              "value": "={{ $json }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7688b7cb-9a41-4f94-8cfc-fa65fd04f6df",
+      "name": "LinkedIn Result1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1808,
+        1728
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "id": "a875c0a0-f8a4-4c10-8517-2ff5ff07e4f0",
+      "name": "Merge Results1",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        2128,
+        1712
+      ],
+      "typeVersion": 3,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Social Media Content Factory').item.json.output.platform_posts['X-Twitter'].post }}{{ $('Social Media Content Factory').item.json.output.platform_posts['X-Twitter'].hashtags }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        1552,
+        1344
+      ],
+      "id": "39d21832-022b-4084-b2ec-1f29e90f4768",
+      "name": "Create Tweet"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "f77cd9e7-86dd-4a44-89f6-0fc8fdd238cb",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        128,
+        1472
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Step 8️⃣: Share Final Results On Telegram & Email",
+        "height": 760,
+        "width": 1020,
+        "color": 7
+      },
+      "id": "154f1fd5-347f-4452-9485-4af783253b6f",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Parse the social media post results and generate a modern single line HTML table showing platform statuses. For each entry:\n\n-Extract platform name from the JSON key\n-Identify status (Success/Error) based on statusCode or error presence\n-Capture error message if present\n-Format as responsive HTML table with professional styling\n-Ensure email client compatibility with inline CSS\n-Include error handling for invalid JSON formats\n-Remove all line breaks and \\n from response.\n-Avoid any preamble or further explanation and remove all ``` and ```html from response.\n\n## Implementation Example:\nThis solution uses the parsed results from your workflow to generate:\n<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; margin: 20px 0; background-color: #f9f9f9; border: 1px solid #ddd;\">\n    <thead>\n        <tr style=\"background-color: #007bff; color: #fff;\">\n            <th style=\"border: 1px solid #ddd; padding: 12px; text-align: left;\">Platform</th>\n            <th style=\"border: 1px solid #ddd; padding: 12px; text-align: left;\">Status</th>\n            <th style=\"border: 1px solid #ddd; padding: 12px; text-align: left;\">Details</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr style=\"background-color: #ffffff;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Instagram</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unsupported post request. Object with ID '[your-unique-id]' does not exist, cannot be loaded due to missing permissions.</td>\n        </tr>\n        <tr style=\"background-color: #f8f9fa;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">X (Twitter)</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unable to sign without access token</td>\n        </tr>\n        <tr style=\"background-color: #ffffff;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Facebook</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unsupported post request. Object with ID '[your-unique-id]' does not exist, cannot be loaded due to missing permissions.</td>\n        </tr>\n        <tr style=\"background-color: #f8f9fa;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">LinkedIn</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unable to sign without access token</td>\n        </tr>\n    </tbody>\n</table>\n\n\nThis is the social media post results: \n{{ $json.data.toJsonString() }}\n",
+        "options": {}
+      },
+      "id": "fa5d53e2-dd32-4bb4-929d-42038af4ea0c",
+      "name": "Prepare Results Email",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        368,
+        1328
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Parse the social media post results and generate a brief summary of the results.\n\nThis is the social media post results: \n{{ $json.data.toJsonString() }}\n\n## Example Response:\nThe social media post results indicate multiple errors when attempting to access or post content on various platforms. \n\n1. Instagram: The response shows a 400 status code with an error message indicating that the specific post request is unsupported due to missing permissions or an invalid object ID. \n\n2. X Post: Success\n\n3. Facebook: Success \n\n4. LinkedIn: Also returned an 'Unable to sign without access token' error. \n\nOverall, access token issues and unsupported requests are frequent problems across these social media platforms.\n",
+        "options": {}
+      },
+      "id": "c95cffbd-6199-4366-bcae-993e5d2c5898",
+      "name": "Prepare Results Message",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        368,
+        1616
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "sendTo": "sterkwebservices@gmail.com",
+        "subject": "🔥RESULTS🔥 Social Media Automation Factory",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "df6386f6-32a6-4c9d-b5ba-7d406c5ce524",
+      "name": "Gmail Results",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        720,
+        1328
+      ],
+      "webhookId": "0a81b95a-cd82-465d-8450-cf38518a4cbb",
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "chatId": "=YOUR_TELEGRAM_CHAT_ID",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "40a28da6-44ed-4a74-a658-b3ffef6acde1",
+      "name": "Telegram Results",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        720,
+        1616
+      ],
+      "webhookId": "bb40ede7-03cf-493d-b051-196b96725925",
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 620,
+        "width": 940,
+        "color": 4
+      },
+      "id": "9a9345a2-c727-418c-899f-e3df9bc5d1c5",
+      "name": "Sticky Note13",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        1296
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {
+          "responseFormat": "text"
+        }
+      },
+      "id": "54bf9fea-986f-4845-a749-19047e7c7616",
+      "name": "gpt-4o2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        352,
+        1488
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {
+          "responseFormat": "text"
+        }
+      },
+      "id": "02e64d3b-2338-4a79-a956-1f018b4906d5",
+      "name": "gpt-4o3",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        352,
+        1776
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "content": "# Step 1️⃣: Agent to Create Text Content\n**Node Ai Agent:** This Agent will create Text content of Social media Posts ",
+        "height": 560,
+        "width": 448,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        272,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "bd29573b-73d8-470d-aac8-f829dc422929",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 💡Notes\n\nRewrite the Social Media Content Factory prompts to your personal or business requirements. Read Detailed Guide on: https://myaiworkflows.com/ \n\nAdd following Credentials:\n- OpenAI API Key\nhttps://auth.openai.com/log-in\n\n- SERP API Key\nhttps://serpapi.com/\n\n- Gmail OAuth\nhttps://docs.n8n.io/integrations/builtin/credentials/google/\n\n- Telegram Bot (Optional)\nhttps://docs.n8n.io/integrations/builtin/credentials/telegram/\n\n- Upload Care\nhttps://uploadcare.com/",
+        "height": 500,
+        "width": 480
+      },
+      "id": "28fb47e4-5fa3-4cd1-bc6c-091a4b68cdf7",
+      "name": "Sticky Note16",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        48
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Step 2️⃣: Agent to Create Image Prompt\n**Node Ai Agent:** This Agent will create a prompt for image generation. ",
+        "height": 560,
+        "width": 400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        752,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "04321a7a-c9a5-48b1-b6ac-b05781bb6bcf",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Step 3️⃣: Agent to Create Review Email\n**Node Ai Agent:** This Agent will create a review email in provided HTML format. ",
+        "height": 560,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1200,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "528b12f2-0efa-4ce1-b793-048929f6d884",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Step 4️⃣: Send Approval Request\n**Node Gmail:** This will send you a review and approval email. I will proceed after your approval. ",
+        "height": 384,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1728,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "285b7cfd-9972-47ec-9353-9dc4ac25ad54",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# Step 5️⃣: Generate Img & Store on cloud Platform\n**Nodes:** If Node for Approval Confirmation, ChatGPT Image Generate, HTTP Node (Uploadcare API).",
+        "height": 384,
+        "width": 1168,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        736
+      ],
+      "typeVersion": 1,
+      "id": "1d5f141d-e0ed-41f9-b1e8-2f5392062872",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 736,
+        "width": 2144,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "ce74462c-53e4-4913-8d3a-dcb2c1cffdb1",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 464,
+        "width": 1312,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        688
+      ],
+      "typeVersion": 1,
+      "id": "4354d144-1c76-4811-8483-8085d73d01dd",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1264,
+        "width": 928,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1376,
+        688
+      ],
+      "typeVersion": 1,
+      "id": "84848e25-4387-4998-9d2f-8220e90bd8e9",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "### ▶️ Video Help content\n\nWatch tutorial videos on TouTube channel: www.youtube.com/@JitendraAutomates\n\n- Watch how to connect Instagram with N8n: https://youtu.be/f6XvRdIQ3XQ\n\n- Watch how to connect G Drive with N8n:\nhttps://youtu.be/JOecOJ99DAc\n\n- Watch how to Self host n8n for Free\nhttps://youtu.be/PSYr3FZsB4w\n",
+        "height": 500,
+        "width": 480,
+        "color": 6
+      },
+      "id": "4d167954-cad8-46b2-a37d-f61d6b926754",
+      "name": "Sticky Note17",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        656
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Social Media Content Factory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Social Media Content Factory",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Social Media Content Factory": {
+      "main": [
+        [
+          {
+            "node": "Create Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT 4o LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Social Media Content Factory",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Social Media Content": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Social Media Content Factory",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Content Review Email": {
+      "main": [
+        [
+          {
+            "node": "Gmail User for Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prepare Content Review Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail User for Approval": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "Prepare Content Review Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Create Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Facebook Graph API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API": {
+      "main": [
+        [
+          {
+            "node": "Instagram Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API1": {
+      "main": [
+        [
+          {
+            "node": "Facebook Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Facebook Graph API1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Result1": {
+      "main": [
+        [
+          {
+            "node": "Merge Results1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "X Result1": {
+      "main": [
+        [
+          {
+            "node": "Merge Results1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Facebook Result1": {
+      "main": [
+        [
+          {
+            "node": "Merge Results1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "LinkedIn Result1": {
+      "main": [
+        [
+          {
+            "node": "Merge Results1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge Results1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Tweet": {
+      "main": [
+        [
+          {
+            "node": "X Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Prepare Results Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Results Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Results Email": {
+      "main": [
+        [
+          {
+            "node": "Gmail Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Results Message": {
+      "main": [
+        [
+          {
+            "node": "Telegram Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4o2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prepare Results Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4o3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prepare Results Message",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Topic": "Artificial Intelligence ka Future aur Jobs",
+          "Keywords or Hashtags (optional)": "",
+          "Link (Optional)": "",
+          "submittedAt": "2025-09-19T07:20:02.592+05:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "versionId": "e2b58374-b302-4881-8a8d-b12b4d12f1e5",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-21T18:32:03.345Z",
+      "updatedAt": "2025-09-21T18:32:03.345Z",
+      "role": "workflow:owner",
+      "workflowId": "ycQNCskIPgh7P63y",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
