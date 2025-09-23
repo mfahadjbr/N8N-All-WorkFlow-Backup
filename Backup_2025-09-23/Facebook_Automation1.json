@@ -1,0 +1,1005 @@
+{
+  "createdAt": "2025-09-21T18:00:56.779Z",
+  "updatedAt": "2025-09-21T18:03:41.886Z",
+  "id": "tp734nzevORwP3fa",
+  "name": "Facebook_Automation1",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2caebe7c-a2d3-428e-b129-fcfbe66854e5",
+              "name": "post_type",
+              "value": "text",
+              "type": "string"
+            },
+            {
+              "id": "f5027281-f5b9-4507-95f3-f1d8749e9028",
+              "name": "page_id",
+              "value": "793286663867636",
+              "type": "string"
+            },
+            {
+              "id": "c4578992-d24a-4666-b369-ae9f8c91aaec",
+              "name": "node_type",
+              "value": "facebook",
+              "type": "string"
+            },
+            {
+              "id": "a17a5c94-d9ae-44f8-9d56-fb55d17efe5a",
+              "name": "image_url",
+              "value": "https://imgs.search.brave.com/MvApOA8PoW3PtXjHckUDYjcF0spLj8ywQfcT0hxDa6k/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNDk2/NjIxMjA3L3Bob3Rv/L2V4Y2l0ZWQtbGl0/dGxlLWJveS1sYXVn/aGluZy5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9SklKUDNB/eUlBR3pWcGNCOHc2/RktuXzFrckxIWTNR/ZU1zU3lmRlItVEhh/TT0",
+              "type": "string"
+            },
+            {
+              "id": "32aa1561-458c-4f64-a854-eab65f9ad1dd",
+              "name": "video_url",
+              "value": "https://videos.pexels.com/video-files/4434242/4434242-sd_360_640_24fps.mp4",
+              "type": "string"
+            },
+            {
+              "id": "383ffb11-0191-4fbc-abb1-c9183c66c71c",
+              "name": "reel_url",
+              "value": "https://videos.pexels.com/video-files/4830364/4830364-uhd_1440_2732_25fps.mp4",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1168,
+        752
+      ],
+      "id": "a4b68c16-9a8a-46b0-a3e0-a64f7a1cf483",
+      "name": "Configure Post Settings"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Configure Post Settings').item.json.post_type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ab388a77-1660-4a64-ba58-bc405444dbd5"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "663bacc8-ceeb-4f81-b058-c379eaf6e717",
+                    "leftValue": "={{ $('Configure Post Settings').item.json.post_type }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "99441a51-906e-469a-b98e-64aa43c996ba",
+                    "leftValue": "={{ $('Configure Post Settings').item.json.post_type }}",
+                    "rightValue": "video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Video"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "abb2fd36-d2c5-479d-bb6e-e201a6d20d05",
+                    "leftValue": "={{ $('Configure Post Settings').item.json.post_type }}",
+                    "rightValue": "carousel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Carousel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "be8816f5-ae68-48c3-869e-bc67078298d8",
+                    "leftValue": "={{ $('Configure Post Settings').item.json.post_type }}",
+                    "rightValue": "reel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reel"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -688,
+        704
+      ],
+      "id": "bb58db4b-2cb7-4dc4-be13-e98875d6f110",
+      "name": "Smart Content Router"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.page_id }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"message\":\"Automated Post via n8n\",\n   \"link\":\"https://youtu.be/lCX1Skd_Q4M?si=Klq0tka7HMcM0hSB\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        128,
+        80
+      ],
+      "id": "f72a66bc-63df-4271-82cf-f68967a8f345",
+      "name": "Text Post"
+    },
+    {
+      "parameters": {
+        "content": "## ⚙️ Post Configuration Center\n**Customize your content here before posting**\n\n📋 **Required Settings:**\n- `post_type` → Choose: text, article, article_image, image, video\n- `image_url` → Direct link to image file  \n- `video_url` → Direct link to video file\n\n🔧 **Quick Setup:** Just modify the \"Configure Post Settings\" node values",
+        "height": 620,
+        "width": 640,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1584,
+        448
+      ],
+      "id": "f9ceddca-ab73-40da-b496-67c16cb40e72",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 🧠 Intelligent Content Router\n**Automatically detects post type and routes to correct processing**\n",
+        "height": 620,
+        "width": 360,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        448
+      ],
+      "id": "5b03cc06-0d6b-4bb8-9867-6ebe1aefaaac",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 📸 Image Posting",
+        "height": 360,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        448
+      ],
+      "id": "f8f6c009-f233-431b-8b00-c77b509c4a7b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## 📸 Reel Posting",
+        "height": 240,
+        "width": 1020
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        1552
+      ],
+      "id": "a360d66f-6989-49a0-8b56-6acd4a1fd862",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## 📸 Text Posting",
+        "height": 320,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        64
+      ],
+      "id": "ffb79373-2e61-4906-906b-cccf80fced24",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "465dee68-878c-46de-8dd8-ba29e8bb93d3",
+              "leftValue": "={{ $('Configure Post Settings').item.json.node_type }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        176
+      ],
+      "id": "66337a25-0b12-4a58-b5d8-03a83bac02cc",
+      "name": "Text If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1488,
+        752
+      ],
+      "id": "89bfdc62-b046-4075-8942-30b3b8a5f388",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "465dee68-878c-46de-8dd8-ba29e8bb93d3",
+              "leftValue": "={{ $('Configure Post Settings').item.json.node_type }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        576
+      ],
+      "id": "2c0f52ca-b71c-4c84-896d-5ec72e9d518d",
+      "name": "Image if"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "Automated Post via n8n"
+              },
+              {
+                "name": "link",
+                "value": "https://youtu.be/lCX1Skd_Q4M?si=Klq0tka7HMcM0hSB"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        128,
+        256
+      ],
+      "id": "7223d1c5-557f-4a31-9351-7715a6ddd252",
+      "name": "Facebook Text Post"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.page_id }}/photos",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"url\":\"{{ $json.image_url }}\",\n   \"message\": \"automate post with link https://youtu.be/lCX1Skd_Q4M?si=VXZYWlgjCVtdTK34\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        496
+      ],
+      "id": "ddb71514-b836-4888-8eec-8493b6a85a83",
+      "name": "Post Image"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "me",
+        "edge": "photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "Automated Post via n8n"
+              },
+              {
+                "name": "url",
+                "value": "={{ $json.image_url }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        64,
+        656
+      ],
+      "id": "de13ee1d-a5a6-4734-b5c4-0c32d10593f6",
+      "name": "Facebook Image Post"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "465dee68-878c-46de-8dd8-ba29e8bb93d3",
+              "leftValue": "={{ $('Configure Post Settings').item.json.node_type }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        1632
+      ],
+      "id": "47edf19f-6b7a-4a0d-baec-1322d379c3f3",
+      "name": "Reel if"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.page_id }}/video_reels",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"upload_phase\":\"start\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        1568
+      ],
+      "id": "0da015c5-b2e7-4c5f-b08b-93cdaafeef21",
+      "name": "Initialize Upload Session"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "={{ $('Configure Post Settings').item.json.reel_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        1568
+      ],
+      "id": "2bf3d53b-a7b0-4f3c-8e6b-8b060e5bb517",
+      "name": "Upload the Reel"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v23.0/{{ $('Initialize Upload Session').item.json.video_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "status"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1568
+      ],
+      "id": "554d4c0c-8af5-4a5a-bf27-e7ff38b5fb6b",
+      "name": "Check Status of Upload"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $('Configure Post Settings').item.json.page_id }}/video_reels",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"video_id\":\"{{ $('Initialize Upload Session').item.json.video_id }}\",\n   \"upload_phase\": \"finish\",\n   \"video_state\": \"PUBLISHED\",\n   \"description\": \"This is automated post via n8n\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        1568
+      ],
+      "id": "c800d497-d9ab-4fd8-987d-88334bd3553d",
+      "name": "Publish Reel"
+    },
+    {
+      "parameters": {
+        "content": "## 📸 Video Posting",
+        "height": 340,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        864
+      ],
+      "id": "46ce91ad-d22d-4f90-bc82-41ef2787fb89",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "465dee68-878c-46de-8dd8-ba29e8bb93d3",
+              "leftValue": "={{ $('Configure Post Settings').item.json.node_type }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        944
+      ],
+      "id": "dd07149e-d3ba-4e7a-a9cb-bf975b3a0c65",
+      "name": "Video if"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.page_id }}/videos",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"file_url\":\"{{ $json.video_url }}\",\n   \"description\": \"automate post with link https://youtu.be/lCX1Skd_Q4M?si=VXZYWlgjCVtdTK34\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        896
+      ],
+      "id": "5ab35536-2c72-4b0e-80ab-83b2a704615b",
+      "name": "Video Upload"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "me",
+        "edge": "videos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "description",
+                "value": "Automated Post via n8n"
+              },
+              {
+                "name": "file_url",
+                "value": "={{ $json.video_url }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        80,
+        1072
+      ],
+      "id": "b610b44d-6470-457d-803d-dfb8498322dd",
+      "name": "Facebook Video Post"
+    },
+    {
+      "parameters": {
+        "content": "## 📸 Carousel Posting",
+        "height": 280,
+        "width": 1020
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        1232
+      ],
+      "id": "53ee982b-0682-4b91-b2c4-913eb3afac3c",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "465dee68-878c-46de-8dd8-ba29e8bb93d3",
+              "leftValue": "={{ $('Configure Post Settings').item.json.node_type }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        1312
+      ],
+      "id": "38c2da5a-fd65-4eb6-84cb-4790e05f1226",
+      "name": "Carousel"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $json.page_id }}/photos",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"url\":\"{{ $json.image_url }}\",\n   \"published\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        1296
+      ],
+      "id": "2a01408b-3da5-486d-9786-c8ae7fde3daf",
+      "name": "Post Image 1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $('Configure Post Settings').item.json.page_id }}/feed",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"message\": \"automate post with link https://youtu.be/lCX1Skd_Q4M?si=VXZYWlgjCVtdTK34\",\n   \"attached_media\": [\n      {\"media_fbid\": \"{{ $('Post Image 1').item.json.id }}\"},\n      {\"media_fbid\": \"{{ $('Post Image 2').item.json.id }}\"}\n   ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1296
+      ],
+      "id": "d99453f7-1279-4b27-9fef-a708a4871024",
+      "name": "Publish content"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $('Configure Post Settings').item.json.page_id }}/photos",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"url\":\"{{ $('Configure Post Settings').item.json.image_url }}\",\n   \"published\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        1296
+      ],
+      "id": "b93a4eb8-9472-47e8-bace-2d7c92e3f824",
+      "name": "Post Image 2"
+    }
+  ],
+  "connections": {
+    "Configure Post Settings": {
+      "main": [
+        [
+          {
+            "node": "Smart Content Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Content Router": {
+      "main": [
+        [
+          {
+            "node": "Text If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Image if",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Video if",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Carousel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reel if",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text If": {
+      "main": [
+        [
+          {
+            "node": "Text Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Facebook Text Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Configure Post Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image if": {
+      "main": [
+        [
+          {
+            "node": "Post Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Facebook Image Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reel if": {
+      "main": [
+        [
+          {
+            "node": "Initialize Upload Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Upload Session": {
+      "main": [
+        [
+          {
+            "node": "Upload the Reel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload the Reel": {
+      "main": [
+        [
+          {
+            "node": "Check Status of Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status of Upload": {
+      "main": [
+        [
+          {
+            "node": "Publish Reel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video if": {
+      "main": [
+        [
+          {
+            "node": "Video Upload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Facebook Video Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carousel": {
+      "main": [
+        [
+          {
+            "node": "Post Image 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Image 1": {
+      "main": [
+        [
+          {
+            "node": "Post Image 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Image 2": {
+      "main": [
+        [
+          {
+            "node": "Publish content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "31207ef3-fb7f-4f59-8e7f-2dfc9717ef07",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-21T18:00:56.779Z",
+      "updatedAt": "2025-09-21T18:00:56.779Z",
+      "role": "workflow:owner",
+      "workflowId": "tp734nzevORwP3fa",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
