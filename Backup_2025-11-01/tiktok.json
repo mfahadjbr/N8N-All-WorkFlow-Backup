@@ -1,0 +1,28 @@
+{
+  "createdAt": "2025-09-24T21:51:34.890Z",
+  "updatedAt": "2025-09-24T21:51:34.890Z",
+  "id": "LJioILQLfVELio3t",
+  "name": "tiktok",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "adf47522-4aa0-4c99-9e18-e0a4faa6bb52",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-24T21:51:34.890Z",
+      "updatedAt": "2025-09-24T21:51:34.890Z",
+      "role": "workflow:owner",
+      "workflowId": "LJioILQLfVELio3t",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
