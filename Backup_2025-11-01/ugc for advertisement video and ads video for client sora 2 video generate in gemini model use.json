@@ -1,0 +1,1162 @@
+{
+  "createdAt": "2025-10-20T11:34:25.683Z",
+  "updatedAt": "2025-10-20T11:34:47.923Z",
+  "id": "pJU9AxQ1pLXgLpST",
+  "name": "ugc for advertisement video and ads video for client sora 2 video generate in gemini model use",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "ugc video",
+        "formDescription": "This is collect data for video generation form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "image url",
+              "placeholder": "Enter your image url"
+            },
+            {
+              "fieldLabel": "ratio video",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "portrait"
+                  },
+                  {
+                    "option": "landscape"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "your idea",
+              "placeholder": "Enter your idea"
+            },
+            {
+              "fieldLabel": "number of videos",
+              "placeholder": "Enter your number of videos"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -1536,
+        80
+      ],
+      "id": "53d48a6d-1c9d-45f3-995d-249bd2c72b0f",
+      "name": "On form submission",
+      "webhookId": "a7fcac50-c715-47df-91a8-d737f8f85793"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['image url'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1376,
+        80
+      ],
+      "id": "f9452de7-1fc3-48a6-a065-5c6d775538e1",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scenes\": [\n    {\n      \"Title\": \"Titre ici\",\n      \"Caption\": \"Courte légende avec emoji 😂\",\n      \"sujet1\": \"sujet2 #sujet3 #sujet4 #populaire1\",\n      \"populaire2\": \"populaire3 #populaire4 #tendance1\",\n      \"tendance2\": \"tendance3 #tendance4\",\n      \"Prompt\": \"Invite ici\",\n      \"Image_reference\": \"https://example.com/image.jpg\"\n    },\n    {\n      \"Title\": \"Titre ici\",\n      \"Caption\": \"Courte légende avec emoji 😂\",\n      \"sujet1\": \"sujet2 #sujet3 #sujet4 #populaire1\",\n      \"populaire2\": \"populaire3 #populaire4 #tendance1\",\n      \"tendance2\": \"tendance3 #tendance4\",\n      \"Prompt\": \"Invite ici\",\n      \"Image_reference\": \"https://example.com/image.jpg\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -448,
+        544
+      ],
+      "id": "5fb35dc3-abaf-4dbc-b993-d97db19bf8ab",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Give me {{ $('On form submission').item.json['number of videos'] }} video ideas to generate for TikTok Shop based on the user’s instruction:\n\n{{ $('On form submission').item.json['your idea'] }}\n\nHere is the description of the product image:\n\n{{ $json.content }}\n\nHere is the image URL: {{ $('HTTP Request').item.json['image url'] }}\n\n\nconvert the whole response to be in french.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "A – Ask (Request):\n\nSuggest detailed video prompts based on the user’s indications — always imitating the format, tone, and structure of a master prompt provided.\n\nIf no example is given, use the user’s idea to generate a new prompt in a cinematic in-house style.\nThe number of outputs is defined by the user.\n\nG – Guidance (Directives):\n\nRole: Visual director or prompt artist aligned with the brand\nNumber of outputs: As specified by the user\n\nConstraints:\n\nAlways follow the tone, brand, or direction of the user.\n\nStrictly respect the style, length, layout, form, and pacing of any master prompt provided.\n\nNever use characters, brands, or intellectual properties protected by copyright or trademark.\n\nAlways check the “Sheet” tool to avoid duplicate titles, legends, or prompts.\n\nDo not repeat ideas already listed in the Sheet.\n\nE – Examples:\n\nDirectly follow the instructions of any master prompt provided by the user:\n\nMatch the rhythm of sentences, length, and visual vocabulary of the example.\n\nReproduce exactly the tone, cinematic intensity, and phrasing structure.\n\nIf no master prompt is given, create a lively and immersive scene using a cinematic trailer-style voice.\n\nN – Notation:\n\nFormat: JSON\nExample output:\n\n{\n  \"scenes\": [\n    {\n      \"Title\": \"Title here\",\n      \"Caption\": \"Short caption with emoji 😊 #topic1 #topic2 #topic3 #popular1 #popular2 #trend1 #trend2 #trend3 #trend4\",\n      \"Prompt\": \"Prompt here\",\n      \"image_reference\": \"https://example.com/image.jpg\"\n    },\n    {\n      \"Title\": \"Title here\",\n      \"Caption\": \"Short caption with emoji 😊 #topic1 #topic2 #topic3 #popular1 #popular2 #trend1 #trend2 #trend3 #trend4\",\n      \"Prompt\": \"Prompt here\",\n      \"image_reference\": \"https://example.com/image.jpg\"\n    }\n  ]\n}\n\n\nT - Tools (Outfits):\n\nYou have the following tools at your disposal, each clearly described:\n\nThink tool: Always use this tool to prefer reflection and reasoning before responding.\nSheet: A useful memo allowing you to verify if a similar idea has already been generated. Always consult it to avoid repetition of titles, legends, or invitations.\n#Voice! (example of a prompt):\n\nDialogue: \"I discovered this hat on a line and immediately put it on, it fits perfectly. Comfortable and quite suitable for a suit or a touch of chic elegance. It changes everything!\"\nEmotion: Confidence, slight enthusiasm, with a touch of playfulness.\nVoice type: Feminine voice, soft and clear, with a French accent, enjoyable and sincere.\n\nSheet: A memo allowing you to verify if a similar idea has already been generated. Always consult it to avoid repetition of titles, legends, or invitations.\n#Voice! (example of a good prompt):\n\nDialogue: \"I discovered this hat online and frankly, it has become my favorite accessory. This khaki hat in faux fur with a feather is stylish, comfortable, and adds a touch of chic and natural elegance. And this little feather, it really changes everything!\"\nEmotion: Confidence, slight enthusiasm, with a warm and natural tone.\nVoice type: Feminine voice, soft and clear, with a French accent, playful and sincere.\nAction: She adjusts the khaki hat on her head, smiles at the camera, turns slightly to show the side with the feather, then brushes the edge of the hat while continuing to speak.\nCharacter: Brunette woman with wavy hair, light makeup, relaxed yet elegant style, white blouse, beige pants, discreet accessories.\nSetting: Café terrace in the afternoon, natural ambiance with plants and light wooden furniture, soft late afternoon light.\nCamera: Smartphone video, handheld, vertical framing, natural shakes, authentic lighting, realistic rendering.\n\n\n\nconvert the whole response to be in french."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -752,
+        80
+      ],
+      "id": "c33e3c68-755b-4a4c-9a76-ad1c47c0e1f1",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -752,
+        320
+      ],
+      "id": "dcb0ba69-6070-475d-a382-75c1a15dc199",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 507698155,
+          "mode": "list",
+          "cachedResultName": "Sheet5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=507698155"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -624,
+        320
+      ],
+      "id": "a46c978e-df3a-482b-b06d-913657b89261",
+      "name": "Get row(s) in sheet in Google Sheets"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        80
+      ],
+      "id": "c911e980-1d46-4dfd-8eb7-0d9b83e77e4f",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 507698155,
+          "mode": "list",
+          "cachedResultName": "Sheet5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=507698155"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "idea generate",
+            "Title": "={{ $('Split Out').item.json.Title }}",
+            "Prompt": "={{ $('Split Out').item.json.Prompt }}",
+            "Description": "={{ $('Split Out').item.json.Caption }}",
+            "Url Image": "={{ $json.secure_url }}",
+            "Ratio": "={{ $('On form submission').item.json['ratio video'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ratio",
+              "displayName": "Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Url Image",
+              "displayName": "Url Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Url Video Generate",
+              "displayName": "Url Video Generate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        64
+      ],
+      "id": "4c4e6372-e32f-4479-91e8-74e95f350917",
+      "name": "Append row in sheet"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 12
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1504,
+        672
+      ],
+      "id": "fea1ed75-e080-4e63-8a1c-c56866929581",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 507698155,
+          "mode": "list",
+          "cachedResultName": "Sheet5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=507698155"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "idea generate"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1296,
+        672
+      ],
+      "id": "140bbf8f-4218-43ea-98da-3cd8500829b1",
+      "name": "Get row(s) in sheet"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Url Image'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1088,
+        672
+      ],
+      "id": "5e58506b-61b2-483e-b0e2-39da3acd7d53",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://kieai.redpandaai.co/api/file-stream-upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ea589eba41b18b18817d9376fef0995d"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "uploadPath",
+              "value": "images/user-uploads"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $json.Title }}.jpg"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -880,
+        672
+      ],
+      "id": "5d2cc2d7-60a4-4304-b62d-b075f5804454",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        784
+      ],
+      "id": "1636e258-0373-4ad8-b412-aaec5547147e",
+      "name": "Wait1",
+      "webhookId": "070665bc-15b5-487d-ab0a-dc6c31361781"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 507698155,
+          "mode": "list",
+          "cachedResultName": "Sheet5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=507698155"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "generate",
+            "Title": "={{ $('HTTP Request1').item.json.Title }}",
+            "Url Video Generate": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ratio",
+              "displayName": "Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Url Image",
+              "displayName": "Url Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Url Video Generate",
+              "displayName": "Url Video Generate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        592
+      ],
+      "id": "525f897f-faca-40d3-aac0-2003dd5caf43",
+      "name": "Mark Status as Fail1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 507698155,
+          "mode": "list",
+          "cachedResultName": "Sheet5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=507698155"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('HTTP Request1').item.json.Title }}",
+            "Status": "Error"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ratio",
+              "displayName": "Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Url Image",
+              "displayName": "Url Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Url Video Generate",
+              "displayName": "Url Video Generate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        400
+      ],
+      "id": "7476ab72-6e9b-430a-ada8-122c3b3d2869",
+      "name": "Update row in sheet1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "failed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "19be8f8b-cc32-41c5-b034-9ab7332a6126"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bc15fb1f-5671-4318-b676-88b0370ea136",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "success",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "402407f7-0242-4260-ac2b-1cbeebbb386b",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "waiting",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4c9a35ac-ff51-4722-986e-3a98c07ebc85",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "generating",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        32,
+        560
+      ],
+      "id": "3620f121-27a9-45e0-8e6c-9d2e1a18a2ef",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sora-2-image-to-video\",\n  \"input\": {\n    \"prompt\": \"{{ $('HTTP Request1').item.json.Prompt }}\",\n    \"image_urls\": [\n      \"{{ $json.data.downloadUrl }}\"\n    ]\n  },\n  \"aspect_ratio\": \"{{ $('HTTP Request1').item.json.Ratio }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -688,
+        672
+      ],
+      "id": "d05b4b7f-8afa-40e9-b2d3-dd9cd66d43be",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $json.data.taskId}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        688
+      ],
+      "id": "5794a333-bf9a-458d-abd9-e38c7f9a6693",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "=Analyze the given image and determine whether it primarily represents a product, a character, or both.\n\nIf the image is of a product, return the analysis in YAML format with the following fields:\n\nbrand_name: (Name of the brand displayed on the image, if visible or deducible)\ncolor_scheme:\n  hex: (Hexadecimal code of each dominant color used)\n  name: (Descriptive name of the color)\nfont_style: (Describe the font family or style used, e.g., serif/sans-serif, bold/thin, etc.)\nvisual_description: (One or two sentences summarizing what is seen on the image, ignoring the background)\n\n\nIf the image is of a character, return the analysis in YAML format with the following fields:\n\ncharacter_name: (Name of the character if visible or deducible)\ncolor_scheme:\n  hex: (Hexadecimal code of each dominant color used on the character)\n  name: (Descriptive name of the color)\noutfit_style: (Description of the clothing style, accessories, or notable characteristics)\nvisual_description: (One or two sentences summarizing the character’s appearance, ignoring the background)\n\n\nReturn only the YAML.\nDo not add any other explanation or comment.\n\nIf it’s both, return both descriptions as indicated above, in YAML format.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1920,
+        288
+      ],
+      "id": "5b0934a7-2352-44b2-8c61-3310c688db23",
+      "name": "Analyze image"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        400
+      ],
+      "id": "e54841b6-f6c2-4313-9146-491c6573024b",
+      "name": "Auto-fixing Output Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloudinary.com/v1_1/duutt6k9s/image/upload",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file",
+              "value": "={{ $json.Image_reference }}"
+            },
+            {
+              "name": "upload_preset",
+              "value": "cloudinary_image_n8b"
+            },
+            {
+              "name": "folder",
+              "value": "cloudinary_image_n8b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        64
+      ],
+      "id": "76ea28b4-b1c0-42ba-9699-4f7eccee8593",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash"
+        },
+        "text": "Analyze the given image and determine whether it primarily represents a product, a character, or both.\n\nIf the image is of a product, return the analysis in YAML format with the following fields:\n\nbrand_name: (Name of the brand displayed on the image, if visible or deducible)\ncolor_scheme:\n  hex: (Hexadecimal code of each dominant color used)\n  name: (Descriptive name of the color)\nfont_style: (Describe the font family or style used, e.g., serif/sans-serif, bold/thin, etc.)\nvisual_description: (One or two sentences summarizing what is seen on the image, ignoring the background)\n\n\nIf the image is of a character, return the analysis in YAML format with the following fields:\n\ncharacter_name: (Name of the character if visible or deducible)\ncolor_scheme:\n  hex: (Hexadecimal code of each dominant color used on the character)\n  name: (Descriptive name of the color)\noutfit_style: (Description of the clothing style, accessories, or notable characteristics)\nvisual_description: (One or two sentences summarizing the character’s appearance, ignoring the background)\n\n\nReturn only the YAML.\nDo not add any other explanation or comment.\n\nIf it’s both, return both descriptions as indicated above, in YAML format.",
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        80
+      ],
+      "id": "0b2ee808-09ea-475c-8420-74cd5c3202bb",
+      "name": "Analyze an image"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        480
+      ],
+      "id": "81151af0-2790-42cf-8b37-5fc867922a8e",
+      "name": "Google Gemini Chat Model"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Status as Fail1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "image url": "https://i.ibb.co/j9HB3Y8B/Whats-App-Image-2025-10-17-at-04-58-30-662805b5.jpg",
+          "ratio video": "landscape",
+          "your idea": "Speaking of the fact that the perfume smells good.",
+          "number of videos": "1",
+          "submittedAt": "2025-10-18T15:01:05.680+05:00",
+          "formMode": "test"
+        }
+      }
+    ],
+    "HTTP Request3": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "8abe0ade46d772a54499329a30f0666b",
+            "recordId": "8abe0ade46d772a54499329a30f0666b"
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "629f747e-cea5-4d71-a001-9cb584f78530",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-20T11:34:25.683Z",
+      "updatedAt": "2025-10-20T11:34:25.683Z",
+      "role": "workflow:owner",
+      "workflowId": "pJU9AxQ1pLXgLpST",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
