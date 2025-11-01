@@ -1,0 +1,2102 @@
+{
+  "createdAt": "2025-10-03T13:51:17.776Z",
+  "updatedAt": "2025-10-11T17:58:53.537Z",
+  "id": "w6GiGoLBfrEQT8XU",
+  "name": "testing",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Social Media Content Generator",
+        "formDescription": "Generate and publish content across Instagram, LinkedIn, and Facebook",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Topic",
+              "placeholder": "Enter your post topic here",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Keywords or Hashtags (optional)",
+              "placeholder": "Include specific keywords or hashtags for your campaign"
+            },
+            {
+              "fieldLabel": "Link (Optional)",
+              "placeholder": "URL to include in your post"
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Generate & Publish Content"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        3520
+      ],
+      "id": "9fccfeec-52b9-4701-8ee7-d2ff52c67c48",
+      "name": "Content Form Trigger",
+      "webhookId": "e0c0f48e-218a-4428-8a8d-cc97231ad5f3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a content creation AI for SterkWeb.com, specializing in **Business AI Automation, SEO, web design/development, and content writing services**.\n\nCreate engaging, platform-specific content for **LinkedIn, Instagram, and Facebook**. Each post must align with platform preferences while reflecting SterkWeb.com's expertise.\n\n### Core Objectives:\n1. **Platform Optimization**: Tailor content format, tone, and hashtags for each platform\n2. **SEO & Hashtags**: Mix general automation hashtags with trending platform-specific ones\n3. **Engagement Focus**: Create content that sparks interaction through tutorials, insights, and discussions\n4. **Professional Tone**: Maintain approachable yet professional voice\n\n### General Hashtags:\n#sterkweb #aiautomation #jitendraaiautomation #seo #website #localbusiness #google #digitalmarketing\n\n### Platform Guidelines:\n\n#### LinkedIn\n- **Style**: Professional and insightful\n- **Tone**: Business-focused with automation use cases\n- **Length**: 3-4 sentences, detailed yet concise\n- **Hashtags**: #contentcreation #Automation #WorkflowSolutions #DigitalTransformation #digitalmarketing\n- **CTA**: Encourage website visits or professional engagement\n\n#### Instagram  \n- **Style**: Visual storytelling with creative captions\n- **Tone**: Inspirational with emojis for relatability\n- **Length**: 2-3 sentences with visual focus\n- **Hashtags**: #AutomationLife #TechInnovation #WorkflowTips #digitalmarketing #seo #jitendraaiautomation\n- **CTA**: Use \"Swipe to learn more\" or \"Check link below\"\n- **Link**: Add provided link before hashtags, or use \"Visit: https://sterkweb.com\"\n\n#### Facebook\n- **Style**: Community-focused and friendly\n- **Tone**: Relatable with success stories\n- **Length**: 2-3 sentences, conversational\n- **Hashtags**: #SmallBusinessAutomation #Entrepreneurship #digitalmarketing #WorkflowInnovation #aiautomation\n- **CTA**: Encourage likes, shares, comments\n\n### Input Data:\n- Topic: {{ $json.Topic }}\n- Keywords: {{ $json['Keywords or Hashtags (optional)'] }}\n- Link: {{ $json['Link (Optional)'] }}\n\nRespond with valid JSON matching the provided schema exactly.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Respond ONLY with valid JSON matching this schema:\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\" },\n    \"description\": { \"type\": \"string\" },\n    \"platform_posts\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"LinkedIn\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": { \"type\": \"string\" },\n            \"post\": { \"type\": \"string\" },\n            \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"call_to_action\": { \"type\": \"string\" }\n          }\n        },\n        \"Instagram\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": { \"type\": \"string\" },\n            \"caption\": { \"type\": \"string\" },\n            \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"emojis\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"call_to_action\": { \"type\": \"string\" }\n          }\n        },\n        \"Facebook\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"post\": { \"type\": \"string\" },\n            \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"call_to_action\": { \"type\": \"string\" },\n            \"image_suggestion\": { \"type\": \"string\" }\n          }\n        }\n      }\n    },\n    \"additional_notes\": { \"type\": \"string\" }\n  }\n}\n\nNo explanations, comments, or markdown formatting - JSON only."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        128
+      ],
+      "id": "83b0d8f0-5350-448d-bc54-a3a26bebf8d7",
+      "name": "Social Media Content Generator"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        272
+      ],
+      "id": "fe23dc15-d6bb-4f3f-aa51-7084b8b8d014",
+      "name": "OpenAI GPT-4"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "={\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\" },\n    \"description\": { \"type\": \"string\" },\n    \"platform_posts\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"LinkedIn\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": { \"type\": \"string\" },\n            \"post\": { \"type\": \"string\" },\n            \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"call_to_action\": { \"type\": \"string\" }\n          }\n        },\n        \"Instagram\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"image_suggestion\": { \"type\": \"string\" },\n            \"caption\": { \"type\": \"string\" },\n            \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"emojis\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"call_to_action\": { \"type\": \"string\" }\n          }\n        },\n        \"Facebook\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"post\": { \"type\": \"string\" },\n            \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n            \"call_to_action\": { \"type\": \"string\" },\n            \"image_suggestion\": { \"type\": \"string\" }\n          }\n        }\n      }\n    },\n    \"additional_notes\": { \"type\": \"string\" }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        320
+      ],
+      "id": "eb17d704-78a8-4996-9a8b-0153d0ccbd64",
+      "name": "JSON Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a professional visual prompt for image generation based on this LinkedIn post:\n\n{{ $json.output }}\n\n\nGenerate a modern, marketing-style graphic prompt suitable for professional social media. Focus on:\n- Clean, minimalist design\n- Professional color schemes\n- Relevant visual metaphors\n- Brand-appropriate aesthetics\n\nOutput only the image prompt text - no explanations or formatting.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        752,
+        96
+      ],
+      "id": "d2344fb3-abf0-4ca4-b9a9-1e3d7a72b11f",
+      "name": "Image Prompt Creator"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        272
+      ],
+      "id": "49f98f11-01a3-4486-a218-fac0204175a3",
+      "name": "OpenAI GPT-4 Mini"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate clean HTML email content from this JSON data:\n\n{{ $json.output.toJsonString() }}\n\nCreate a professional email review with:\n- Table-based layout with inline CSS\n- Platform cards showing posts, hashtags, and CTAs\n- 600px max-width container\n- Email-safe colors and fonts\n- All platform content clearly displayed\n\nOutput only raw HTML - no code blocks or explanations.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        1136,
+        64
+      ],
+      "id": "5db651b5-47b5-4ae4-9144-2bad69486d9f",
+      "name": "Review Email Generator"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "pythonfor18@gmail.com",
+        "subject": "🔥 REVIEW & APPROVE 🔥 {{ $('Social Media Content Generator').item.json.output.name }}",
+        "message": "={{ $json.output }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 30,
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        224,
+        544
+      ],
+      "id": "8a7bb194-26a9-421f-8a1d-4c09bbab74d4",
+      "name": "Send Approval Email",
+      "webhookId": "b64b895b-d60e-4b08-abde-9b31de452d74"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "approval-check",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b7bfe3e6-e81a-484f-a20d-180ab65b90a6",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        544
+      ],
+      "id": "8b632e7b-9621-4af4-9d59-857061b0023b",
+      "name": "Check Approval"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $('Image Prompt Creator').item.json.output }}",
+        "options": {
+          "returnImageUrls": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        672,
+        544
+      ],
+      "id": "9517ebbc-ab46-4634-b186-d24066166c18",
+      "name": "Generate Image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://upload.uploadcare.com/base/",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "UPLOADCARE_PUB_KEY",
+              "value": "b3221aa89fbaefebadb2"
+            },
+            {
+              "name": "UPLOADCARE_STORE",
+              "value": "auto"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5b6a9cd8-9a46-4ee6-a951-97820b752856",
+      "name": "Upload Image to Cloud"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/17841475983476631/media_publish",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "EAAmkdLMjJZAcBPqmk6X3FYuBcjwGU7lWGIftQmNJ2QjFQGjJ1Iqf3KZAEZAyZAflgCXZCZBLCZChtoBrHYSOiKKZAJJPzXNUaowYoZC7iA3GwxQ9ToTNkZAL3dZBZCKVkPoRpJpSffWUIzLmopw4ffM1zJvs8KmndaGKj7OjF0eHjr7QBjRaYiJSD4TGmrBUTKVDmtRGaLiRNazSoKGRWFRZAcD7Bt0Tu"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3504,
+        336
+      ],
+      "id": "9d4a65ad-8145-4f4e-8875-2f31331c376d",
+      "name": "Publish Instagram Post"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/793286663867636/photos",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Social Media Content Generator').item.json.output.platform_posts.Facebook.post }}\n\n{{ $('Social Media Content Generator').item.json.output.platform_posts.Facebook.hashtags.join(' ') }}\n\n{{ $('Social Media Content Generator').item.json.output.platform_posts.Facebook.call_to_action }}\n\n{{ $('Content Form Trigger').item.json['Link (Optional)'] || 'https://sterkweb.com' }}"
+            },
+            {
+              "name": "url",
+              "value": "={{ $json.secure_url }}"
+            },
+            {
+              "name": "access_token",
+              "value": "EAAmkdLMjJZAcBPp2pl5aA5nCdZBywFZAXekC97Est3W2GEdFYYxc3HXqEo9D9LJMdmfPUMP9PSfB820ZAcmUJ8Rjig7VtGPmQsHMSZCaoVqKfzrizJXniuwiZCmCthp0jpWuW6vLZBwnT4V4ZCmOLZBtIuq5ICp1CPceHVY7LJ8ajeWdz8iNbcvgZAcnpGS2gcQIbn62W9OHBdut7SoFp5m3VX"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3504,
+        528
+      ],
+      "id": "5a210721-8f93-473d-996f-1bc725e461bc",
+      "name": "Post to Facebook"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        3728,
+        512
+      ],
+      "id": "ea15ea56-0afb-4d8c-9b53-219a55a55c8d",
+      "name": "Merge All Results",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3952,
+        528
+      ],
+      "id": "632c44b0-8975-4f88-b1e9-01191dadcbe7",
+      "name": "Aggregate Results"
+    },
+    {
+      "parameters": {
+        "sendTo": "pythonfor18@gmail.com",
+        "subject": "✅ SOCIAL MEDIA AUTOMATION RESULTS",
+        "message": "=Your social media posts have been published!\n\nResults Summary:\n{{ $json.output }}\n\nGenerated content has been posted to Instagram, Facebook, and LinkedIn.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4528,
+        336
+      ],
+      "id": "c9b98b79-afea-4757-b778-2af4f2c8e434",
+      "name": "Send Results Email",
+      "webhookId": "39af92ff-4b0c-470f-9f27-75374be8670d"
+    },
+    {
+      "parameters": {
+        "chatId": "=8104272555",
+        "text": "=🎉 Social Media Automation Complete!\n\n📱 Posts published to:\n✅ Instagram\n✅ Facebook  \n✅ LinkedIn\n\nTopic: {{ $json.output }}\n\nCheck your social media accounts!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4528,
+        736
+      ],
+      "id": "bf9a4f5e-cfaf-4eeb-9d96-a8aea0b83045",
+      "name": "Telegram Notification",
+      "webhookId": "20f4cdbf-c83d-4173-b8dc-ec5abb137d16"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/assets?action=registerUpload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"registerUploadRequest\": {\n        \"recipes\": [\n            \"urn:li:digitalmediaRecipe:feedshare-image\"\n        ],\n        \"owner\": \"urn:li:person:{{ $json.sub }}\",\n        \"serviceRelationships\": [\n            {\n                \"relationshipType\": \"OWNER\",\n                \"identifier\": \"urn:li:userGeneratedContent\"\n            }\n        ]\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2832,
+        720
+      ],
+      "id": "9714eb1d-4822-4b04-8c96-ff643fa75070",
+      "name": "Register Image Upload"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.value.uploadMechanism['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest'].uploadUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3280,
+        720
+      ],
+      "id": "b17beb2e-4aec-493f-9b0a-aecfa97eeb42",
+      "name": "Upload Image File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"author\": \"urn:li:person:{{ $('Get UserID5').item.json.sub }}\",\n  \"lifecycleState\": \"PUBLISHED\",\n  \"specificContent\": {\n    \"com.linkedin.ugc.ShareContent\": {\n      \"shareCommentary\": {\n        \"text\": \"{{ $('Social Media Content Generator').item.json.output.platform_posts.LinkedIn.post }} {{ $('Social Media Content Generator').item.json.output.platform_posts.LinkedIn.call_to_action }} {{ $('Content Form Trigger').item.json['Link (Optional)'] }} {{ $('Social Media Content Generator').item.json.output.platform_posts.LinkedIn.hashtags }}\"\n      },\n      \"shareMediaCategory\": \"IMAGE\",\n      \"media\": [\n        {\n          \"status\": \"READY\",\n          \"description\": {\n            \"text\": \"Center stage!\"\n          },\n          \"media\": \"{{ $('Register Image Upload').item.json.value.asset }}\",\n          \"title\": {\n            \"text\": \"Image Post\"\n          }\n        }\n      ]\n    }\n  },\n  \"visibility\": {\n    \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n  }\n}\n",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3504,
+        720
+      ],
+      "id": "8eaa9786-03ca-489b-bbdc-af327f6cc113",
+      "name": "Linkedin Image Post"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request').item.json.secure_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3056,
+        720
+      ],
+      "id": "c801884c-9afe-4d45-9a67-bd4327529c04",
+      "name": "Download Image"
+    },
+    {
+      "parameters": {
+        "url": "https://api.linkedin.com/v2/userinfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2608,
+        720
+      ],
+      "id": "f4393b77-4500-489c-a549-04aa2707867c",
+      "name": "Get UserID5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgbb.com/1/upload",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "2818a05dae584f8ba80c276451fb4a56"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        544
+      ],
+      "id": "9e933306-842d-4eb6-beb1-d08a56d7a367",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Parse the social media post results and generate a modern single line HTML table showing platform statuses. For each entry:\n\n-Extract platform name from the JSON key\n-Identify status (Success/Error) based on statusCode or error presence\n-Capture error message if present\n-Format as responsive HTML table with professional styling\n-Ensure email client compatibility with inline CSS\n-Include error handling for invalid JSON formats\n-Remove all line breaks and \\n from response.\n-Avoid any preamble or further explanation and remove all ``` and ```html from response.\n\n## Implementation Example:\nThis solution uses the parsed results from your workflow to generate:\n<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; margin: 20px 0; background-color: #f9f9f9; border: 1px solid #ddd;\">\n    <thead>\n        <tr style=\"background-color: #007bff; color: #fff;\">\n            <th style=\"border: 1px solid #ddd; padding: 12px; text-align: left;\">Platform</th>\n            <th style=\"border: 1px solid #ddd; padding: 12px; text-align: left;\">Status</th>\n            <th style=\"border: 1px solid #ddd; padding: 12px; text-align: left;\">Details</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr style=\"background-color: #ffffff;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Instagram</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unsupported post request. Object with ID '[your-unique-id]' does not exist, cannot be loaded due to missing permissions.</td>\n        </tr>\n        <tr style=\"background-color: #f8f9fa;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">X (Twitter)</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unable to sign without access token</td>\n        </tr>\n        <tr style=\"background-color: #ffffff;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Facebook</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unsupported post request. Object with ID '[your-unique-id]' does not exist, cannot be loaded due to missing permissions.</td>\n        </tr>\n        <tr style=\"background-color: #f8f9fa;\">\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">LinkedIn</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px; color: #dc3545;\">✗ Error</td>\n            <td style=\"border: 1px solid #ddd; padding: 12px;\">Unable to sign without access token</td>\n        </tr>\n    </tbody>\n</table>\n\n\nThis is the social media post results: \n{{ $json.data.toJsonString() }}\n",
+        "options": {}
+      },
+      "id": "0923e3b6-6770-4977-8343-a48981f44663",
+      "name": "Prepare Results Email",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        4176,
+        224
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4256,
+        448
+      ],
+      "id": "6023ca49-93c5-4677-b608-8b8da3467c09",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Parse the social media post results and generate a brief summary of the results.\n\nThis is the social media post results: \n{{ $json.data.toJsonString() }}\n\n## Example Response:\nThe social media post results indicate multiple errors when attempting to access or post content on various platforms. \n\n1. Instagram: The response shows a 400 status code with an error message indicating that the specific post request is unsupported due to missing permissions or an invalid object ID. \n\n2. X Post: Success\n\n3. Facebook: Success \n\n4. LinkedIn: Also returned an 'Unable to sign without access token' error. \n\nOverall, access token issues and unsupported requests are frequent problems across these social media platforms.\n",
+        "options": {}
+      },
+      "id": "f7adffb2-f0d9-45d3-955b-e779befae3c8",
+      "name": "Prepare Results Message",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        4176,
+        736
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4256,
+        960
+      ],
+      "id": "05e89d85-f021-4a1e-aae4-8c94dc16595a",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/17841475983476631/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $json.secure_url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('Social Media Content Generator').item.json.output }}\n\n{{ $('Content Form Trigger').item.json['Link (Optional)'] || 'https://sterkweb.com' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3280,
+        336
+      ],
+      "id": "083db94e-1e65-4a04-8f6e-7f4bca18a4e5",
+      "name": "Create Instagram Media2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloudinary.com/v1_1/duutt6k9s/image/upload",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file",
+              "value": "={{ $json.data.url }}"
+            },
+            {
+              "name": "upload_preset",
+              "value": "cloudinary_image_n8b"
+            },
+            {
+              "name": "folder",
+              "value": "cloudinary_image_n8b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2384,
+        528
+      ],
+      "id": "e7ad24be-d7c0-453f-b539-1b190a02d6d2",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "=https://text.pollinations.ai/ {{ $json.encodedPrompt }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "system",
+              "value": "=*You are an AI assistant that must always return output in strict JSON format. The response must never contain extra text, explanations, or formatting outside the JSON. The structure of the JSON must exactly follow this schema:  {   \"type\": \"object\",   \"properties\": {     \"name\": { \"type\": \"string\" },     \"description\": { \"type\": \"string\" },     \"platform_posts\": {       \"type\": \"object\",       \"properties\": {         \"LinkedIn\": {           \"type\": \"object\",           \"properties\": {             \"image_suggestion\": { \"type\": \"string\" },             \"post\": { \"type\": \"string\" },             \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"call_to_action\": { \"type\": \"string\" }           }         },         \"Instagram\": {           \"type\": \"object\",           \"properties\": {             \"image_suggestion\": { \"type\": \"string\" },             \"caption\": { \"type\": \"string\" },             \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"emojis\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"call_to_action\": { \"type\": \"string\" }           }         },         \"Facebook\": {           \"type\": \"object\",           \"properties\": {             \"post\": { \"type\": \"string\" },             \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"call_to_action\": { \"type\": \"string\" },             \"image_suggestion\": { \"type\": \"string\" }           }         }       }     },     \"additional_notes\": { \"type\": \"string\" }   } }  Rules:  Always output a valid JSON object conforming to the schema.  Do not include markdown formatting (no triple backticks, no explanation).  All properties must exist, even if empty (\"\" for strings, [] for arrays).  The output must be machine-readable JSON only.*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -528,
+        544
+      ],
+      "id": "0aa748cc-af87-4e88-aca2-4d3c3af7322b",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node (JavaScript)\nconst items = $input.all();\n\nreturn items.map(item => {\n  const topic = item.json.Topic || \"\";\n  const keywords = item.json[\"Keywords or Hashtags (optional)\"] || \"\";\n  const link = item.json[\"Link (Optional)\"] || \"\";\n\n  // Merge into a single prompt\n  const prompt = `Topic: ${topic}\\nKeywords/Hashtags: ${keywords}\\nLink: ${link}`;\n\n  return {\n    json: {\n      topic,\n      keywords,\n      link,\n      prompt\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        528
+      ],
+      "id": "6a8c2cd3-9404-4bc8-8909-23a51732ec1a",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    encodedPrompt: encodeURIComponent($input.first().json.prompt)\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -768,
+        544
+      ],
+      "id": "7d8526ec-62af-4d48-9419-8204b4cd3bde",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items array coming from previous node\n// Example: [{ json: { data: \"{...stringified JSON...}\" } }]\n\nconst results = [];\n\nfor (const item of items) {\n  try {\n    // Parse the stringified JSON inside data\n    const parsed = JSON.parse(item.json.data);\n\n    // Push the parsed JSON as a clean object\n    results.push({\n      json: parsed\n    });\n\n  } catch (error) {\n    // If parsing fails, return error\n    results.push({\n      json: {\n        error: \"Invalid JSON format\",\n        details: error.message,\n        original: item.json.data\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -304,
+        544
+      ],
+      "id": "35d63f5b-2fc3-4efa-b87b-77c433537ebe",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "url": "=https://text.pollinations.ai/{{ $('Code in JavaScript1').item.json.prompt }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        944
+      ],
+      "id": "42fba950-82f9-47df-ab70-8e4f5fe3a0f1",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ $json.data }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "nologo",
+              "value": "true"
+            },
+            {
+              "name": "model",
+              "value": "nanobanana"
+            },
+            {
+              "name": "token",
+              "value": "gEieaNCMk-ZyNUvg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        944
+      ],
+      "id": "ea3f4205-76fe-4231-852e-bfe844136273",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "url": "=https://text.pollinations.ai/{{ $json.encodedPrompt }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "system",
+              "value": "=You are an expert email designer. Always produce only raw HTML (no surrounding text, no markdown, no explanation). Your single goal is to convert the given JSON input into a production-ready, email-safe HTML message that can be pasted directly into an email builder. Requirements you must follow exactly:  Parse the input JSON string provided by the user. If parsing fails, output a minimal valid HTML email that contains a short human-readable error message inside the body (still as HTML), nothing else.  The HTML must use a table-based layout with inline CSS only (no <style> blocks or external CSS).  The email container must be centered and have a max-width of 600px. Use width attributes on tables and inline max-width where supported.  Use email-safe fonts and fallbacks (e.g., font-family: Arial, Helvetica, sans-serif; and Georgia, serif as needed).  Use email-safe colors and keep contrast accessible. Do not reference external fonts or styles.  Create a clear header (title + description), then one card per platform (LinkedIn, Instagram, Facebook) displayed in stacked rows. Each platform card must show:  Platform name as a header,  image_suggestion (rendered as an <img> with the suggestion as alt text and a placeholder src like cid:placeholder-PLATFORM or empty src=\"\" so template engines can replace it),  The post content (post or caption),  A visible list of hashtags (comma-separated or inline badges),  emojis if present (for Instagram),  call_to_action as a prominent button (use table-button technique with a clickable <a> styled as a button; if CTA is empty, render a disabled-looking button placeholder).  If any expected fields are missing, still include the key in the card with an empty string or empty list display so callers can reliably map fields.  Keep the HTML self-contained (no external images or scripts). Use content-safe placeholders for images (src=\"\" or cid:). Use alt text from image_suggestion.  Ensure the markup is compatible with major email clients (Outlook, Gmail, Apple Mail). Use nested tables, cellpadding, cellspacing=\"0\", border=\"0\", and inline style for spacing. Avoid CSS shorthand that some clients may not support.  Produce semantic, well-formed HTML (doctype optional). Do not include any non-HTML output.  The only input you should read is the JSON provided by the user prompt variable {{ $json.data.toJsonString() }}."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1136,
+        944
+      ],
+      "id": "fb19c04d-3180-44fe-8f5e-f942688383b6",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    encodedPrompt: encodeURIComponent($input.first().json.data)\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        944
+      ],
+      "id": "2eee1356-97e4-41fd-bb8c-aec1db1997c0",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2224,
+        2448
+      ],
+      "id": "8e795d4d-34f1-44c2-8b8f-6641afc8acff",
+      "name": "Telegram Trigger",
+      "webhookId": "7a046cfb-6c87-4185-85d6-9fe044f455f5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "789ec1ea-aad9-4f78-be29-ca7c2c484117",
+              "name": "bot id",
+              "value": "8208716695:AAGJCMWaI-kdYKR_K-8SLPV2PYYz7-fPnGw",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2016,
+        2448
+      ],
+      "id": "a0a4886a-2cce-40dd-a41f-7f423e0a92ce",
+      "name": "Bot ID"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "=What's in thAnalyze the given image and determine if it primarily depicts a product or a character, or BOTH.\n\n- If the image is of a product, return the analysis in YAML format with the following fields:\n\nbrand_name: (Name of the brand shown in the image, if visible or inferable)\ncolor_scheme:\n  - hex: (Hex code of each prominent color used)\n    name: (Descriptive name of the color)\nfont_style: (Describe the font family or style used: serif/sans-serif, bold/thin, etc.)\nvisual_description: (A full sentence or two summarizing what is seen in the image, ignoring the background)\n\n- If the image is of a character, return the analysis in YAML format with the following fields:\n\ncharacter_name: (Name of the character if visible or inferable)\ncolor_scheme:\n  - hex: (Hex code of each prominent color used on the character)\n    name: (Descriptive name of the color)\noutfit_style: (Description of clothing style, accessories, or notable features)\nvisual_description: (A full sentence or two summarizing what the character looks like, ignoring the background)\n\nOnly return the YAML. Do not explain or add any other comments.\n\n\n- if it is BOTH, return both descriptions as guided above in YAML format\nis image?",
+        "imageUrls": "=https://api.telegram.org/file/bot{{ $('Bot ID').item.json['bot id'] }}/{{ $json.result.file_path }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1600,
+        2448
+      ],
+      "id": "ad652d99-7696-41cc-b2ce-92934312f5fd",
+      "name": "Analyze image"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Great ! I have started your work ...",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1392,
+        2448
+      ],
+      "id": "e2fd78ff-a9c2-43ae-9986-22546ad77aa9",
+      "name": "Send a text message",
+      "webhookId": "f4096b4f-95e8-48d3-8d75-51ac6a4a4908"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\nYour task: Create 1 image prompt as guided by your system guidelines.\n\nMake sure that the reference image is depicted as ACCURATELY as possible in the resulting images, especially all text.\n\n***\n\n\nThese are the user's instructions\n{{ $('Telegram Trigger').first().json.message.caption }}\n\n***\nDescription of the reference image:\n{{ $('Analyze image').item.json.content }}\n\n\n***\nThe user's preferred aspect ratio: inferred based on their message above, default is vertical if not given\n\n\n\n***\nUse the Think tool to double check your output\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "system_prompt: |\n  ## SYSTEM PROMPT: Image Prompt Generator\n\n  Default: If the user's instructions lack detail, use: put this (product) into the scene with the (character).\n\n  ***\n\n  If the user wants authentic UGC-style content: default to **casual UGC scenes** unless they specify otherwise, and follow the rules below.\n\n    If the user explicitly asks for a different style or setting, follow that request.\n\n    Your task: Take the reference image—or the product shown in it—and place it into realistic, everyday scenes as if captured by regular creators or influencers.\n\n    All outputs must feel **natural, candid, and unpolished** — not studio or overly staged. This includes:\n      - Everyday, relatable settings\n      - Amateur iPhone photo look\n      - Slightly imperfect framing and lighting\n      - Candid poses and genuine expressions\n      - Visible imperfections (blemishes, messy hair, uneven skin, real texture)\n      - Real environments left as-is (clutter, busy backgrounds)\n      - Always preserve all visible product **text exactly** (logos, slogans, packaging claims). Never invent new claims or numbers.\n\n    **Camera parameter** must always include casual realism descriptors such as:\n    unremarkable amateur iPhone photos, reddit image, snapchat photo, Casual iPhone selfie, slightly uneven framing, Authentic share, slightly blurry, Amateur quality phone photo\n\n    **No dialogue/video generation. Produce image prompts only.**\n\n  Avoid mentioning the names of copyrighted characters in the prompt.\n\n  ---\n\n  A – Ask:\n    Generate **image-generation instructions only** for AI models based on the user’s request, in exact YAML format.\n    Default to a **vertical aspect ratio** if unspecified.\n    Always include both:\n      - `image_prompt` (stringified YAML describing the scene)\n      - `aspect_ratio_image` (\"3:2\" or \"2:3\")\n\n  ---\n\n  G – Guidance:\n    - Always apply the UGC casual-realism principles above.\n    - Ensure diversity in gender, ethnicity, and hair color when applicable. Default actor age: 21–38 unless specified.\n    - Default to real-world, casual environments unless a setting is explicitly given.\n    - Avoid double quotes in the image prompts.\n\n  ---\n\n  E – Examples:\n    🟢 good_examples:\n      - |\n        {\n          \"scenes\": [\n            {\n              \"image_prompt\": \"action: character holds product naturally\\ncharacter: infer from the reference image\\nproduct: show product with all visible text clear and accurate\\nsetting: infer from the image or from user instruction\\ncamera: amateur iPhone photo, casual selfie, uneven framing, slightly blurry\\nstyle: candid UGC look, no filters, imperfections intact\\ntext_accuracy: preserve all visible text exactly as in reference image\"}]\n,\n              \"aspect_ratio_image\": \"2:3\"\n            }\n          ]\n        }\n    🔴 bad_examples:\n      - Altering or fabricating any product packaging text\n\n  ---\n\n  N – Notation:\n    - Final output must be an object containing only:\n      - `image_prompt` → stringified YAML\n      - `aspect_ratio_image` → \"3:2\" or \"2:3\" (vertical default → 2:3)\n\n  ---\n\n  T – Tools:\n    - Think Tool: Double-check completeness, text accuracy, adherence to UGC realism, and that the output contains **only image prompts**.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1184,
+        2448
+      ],
+      "id": "f5fc912d-157d-4ee9-b825-e4292fcdd34f",
+      "name": "Image Gen"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -1136,
+        2704
+      ],
+      "id": "a3be4a95-66ab-483f-bcda-3b214fa6418d",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"image_prompt\": \"emotion: ...\\naction: ...\\ncharacter: ...\",\n  \"aspect_ratio_image\": \"2:3\"\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -992,
+        2656
+      ],
+      "id": "53f7aed1-dc80-4563-bcbf-0ae56bdd69e5",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/nano-banana/edit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "key 8870fa5c-39d3-46aa-af75-677463a54bca:a8ab320841e8aae0f944f38b5eacbad5"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n     \"prompt\": \"{{ $json.output.image_prompt.replace(/\\\"/g, '\\\\\\\"').replace(/\\n/g, '\\\\n') }}\",\n     \"image_urls\": [\n       \"https://api.telegram.org/file/bot{{ $('Bot ID').first().json['bot id'] }}/{{ $('Get Img Path').first().json.result.file_path }}\"\n     ]\n   }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -832,
+        2464
+      ],
+      "id": "19bbff3a-d836-458c-92af-0f88e0bfe9b6",
+      "name": "Create Image"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -624,
+        2464
+      ],
+      "id": "e6130afb-370e-4a2a-97cd-7f8bc0148967",
+      "name": "Wait",
+      "webhookId": "eafc6d70-2883-445f-aad5-f2599ae117b3"
+    },
+    {
+      "parameters": {
+        "url": "= https://api.telegram.org/bot{{ $('Bot ID').item.json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1808,
+        2448
+      ],
+      "id": "3a9daaf0-bffd-4a8d-a614-0b0a8e9b6e01",
+      "name": "Get Img Path"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Create Image').item.json.response_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "key 8870fa5c-39d3-46aa-af75-677463a54bca:a8ab320841e8aae0f944f38b5eacbad5"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        2464
+      ],
+      "id": "214f45a7-fcdb-4ba6-8eba-5d0e4bbb1b40",
+      "name": "Get Image"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62441103-fe84-4699-8ca3-99980ac7505f",
+              "leftValue": "={{ $json.images[0].url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        2464
+      ],
+      "id": "54222116-938f-419e-a964-943dc18fae42",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        2688
+      ],
+      "id": "bae6e924-a3db-4b07-b18b-a85e091f5d8b",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scenes\": [\n    {\n      \"video_prompt\": \"dialogue: ...\\naction: ...\\ncamera: ...\\nemotion: ...\\nvoice_type: ...\\ncharacter: ...\\nsetting: ...\",\n      \"aspect_ratio_video\": \"9:16\",\n      \"model\": \"veo3_fast\"\n    }\n  ]\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        2656
+      ],
+      "id": "9ae6b599-eff3-43ec-b141-9f7d8c1aeb02",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Your task: Create video prompts as guided by your system guidelines.\n\nMake sure that the reference image is depicted as ACCURATELY as possible in the resulting images, especially all text.\n\nFor each of the scenes, make sure the dialogue runs continuously and makes sense. And always have the character just talk about the product and its benefits based on what you understand about the brand, and how it's used. So if it's a drink, talk about the taste; if it's a bag, talk about the design; if it's tech, talk about its features, and so on.\n\nIf the character will mention the brand name, only do so in the FIRST scene.\n\nUnless stated by the user, do not have the character open or eat or use the product. they are just showing it to the camera.\n\nIf the number of videos is not stated, generate 1 scene.\n\n***\n\nThese are the user's instructions\n{{ $('Telegram Trigger').item.json.message.caption }}\n***\n\nCount of videos to create: inferred based on their message above. Each video will be 8 seconds long, so calculate how many videos you need to generate based on the user's desired total duration\n\n***\nDescription of the reference image/s. {{ $('Analyze image').item.json.content }}\n\nJust use this to understand who the product or character is, don't use it as basis for the dialogue.\n\n\n\n***\nThe user's preferred aspect ratio: inferred based on their message above, default is vertical if not given\n\nThe user's preferred model: inferred based on their message above, default is veo3_fast if not given\n\nThe user's preferred dialogue script: inferred based on their message above, suggest a script \n\n\n***\nUse the Think tool to double check your output\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "system_prompt: |\n  ## SYSTEM PROMPT: UGC-Style Veo3/Veo3_fast Prompt Generator (Video-Only)\n\n  You are a UGC (User-Generated Content) AI agent.  \n  Your task: Take the reference image or the product in the reference image and place it into realistic, casual scenes as if captured by everyday content creators or influencers.  \n\n  All outputs must feel **natural, candid, and unpolished** — avoiding professional or overly staged looks. This means:\n\n    - Everyday realism with authentic, relatable settings\n    - Amateur-quality iPhone photo/video style\n    - Slightly imperfect framing and lighting\n    - Candid poses and genuine expressions\n    - Visible imperfections (blemishes, messy hair, uneven skin)\n    - Real-world environments left as-is (clutter, busy backgrounds)\n\n  We need these videos to look natural and real. So in the prompts, have the Camera parameter always use keywords like these: unremarkable amateur iPhone photos, reddit image, snapchat video, Casual iPhone selfie, slightly uneven framing, Authentic share, slightly blurry, Amateur quality phone photo\n\n  If the dialogue is not provided by the user or you are explicitly asked to create it, generate a casual, conversational line under 150 characters, as if a person were speaking naturally to a friend while talking about the product. Avoid overly formal or sales-like language. The tone should feel authentic, spontaneous, and relatable, matching the UGC style. Use ... to indicate pauses, and avoid special characters like em dashes or hyphens.\n\n\n  A – Ask:\n    Generate **only video generation instructions** for AI models (no image prompts). Infer aspect ratios from vertical/horizontal context; default to vertical if unspecified.\n\n    **Scene count rule:**  \n    - Read the user's requested total video duration and the per-video length (in seconds).  \n    - Calculate the required number of videos by dividing total duration by per-video length, rounding **up** to the nearest integer.  \n    - Output **exactly that many scenes**.  \n    - Never output more or fewer scenes than requested.\n\n  G – Guidance:\n    - Always follow UGC-style casual realism principles listed above.\n    - Ensure diversity in gender, ethnicity, and hair color when applicable. Default to actors in 21 to 38 years old unless specified otherwise.\n    - Use provided scene list when available.\n    - Do not use double quotes in any part of the prompts.\n\n  E – Examples:\n    good_examples:\n      - |\n        {\n          \"scenes\": [\n            {\n              \"video_prompt\": \"dialogue: so tikTok made me buy this... honestly its the best tasting fruit beer in sydney and they donate profits to charity...\\naction: character sits in drivers seat of a parked car, holding the beer can casually while speaking\\ncamera: amateur iphone selfie video, uneven framing, natural daylight\\nemotion: very happy, casual excitement\\ntype: veo3_fast\",\n              \"aspect_ratio_video\": \"9:16\",\n              \"model\": \"veo3_fast\"\n            }\n          ]\n        }\n\n  N – Notation:\n    - Final output is a `\"scenes\"` array at the root level.\n    - The array must contain **exactly `scene_count`** objects, where `scene_count` is the user-calculated number.\n    - Each scene contains:\n      - `video_prompt` → stringified YAML with: dialogue, emotion, voice_type, action, character, setting, camera\n      - `aspect_ratio_video` → \"9:16\" or \"16:9\" (default vertical → 9:16)\n      - `model` → \"veo3\" or \"veo3_fast\"\n\n  T – Tools:\n    - Think Tool: Double-check output for completeness, diversity, adherence to style, and that the number of scenes exactly matches the requested count.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        2448
+      ],
+      "id": "0c960d3b-ab54-4cf7-b695-ba154f5b115f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        800,
+        2400
+      ],
+      "id": "519bb089-7eb6-42ee-a330-c119572a093c",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer fb2088bb45d3cc4be5fb9ca685a98de7"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\":\"{{ $json.video_prompt.replace(/\\n/g, '\\\\n')\n    .replace(/\"/g, '\\\\\"') }}\",\n  \"model\": \"{{ $('Split Out').item.json.model }}\",\n  \"aspectRatio\": \"{{ $('Split Out').item.json.aspect_ratio_video }}\",\n  \"imageUrls\": \"{{ $('Get Image').item.json.images[0].url }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1088,
+        2400
+      ],
+      "id": "ca0b50b5-1774-4c5f-b3ba-44517fcc53ab",
+      "name": "Create Video"
+    },
+    {
+      "parameters": {
+        "amount": 200
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        2400
+      ],
+      "id": "1161ac78-0660-4ce5-86b5-4bd2150e09e1",
+      "name": "Wait1",
+      "webhookId": "0bf30ea0-35f0-4542-8ed6-e1b02cba9fbb"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/veo/record-info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer fb2088bb45d3cc4be5fb9ca685a98de7"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1536,
+        2400
+      ],
+      "id": "c133929a-b0a9-45f2-a3c1-03e4b7175479",
+      "name": "Get Video"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "file": "={{ $json.data.response.originUrls[0] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1744,
+        2400
+      ],
+      "id": "5580dcb2-f974-4f66-93ea-c8152b08d83b",
+      "name": "Send a video",
+      "webhookId": "1f904109-599e-4f36-bf0e-fec9f9309b48"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1040,
+        3184
+      ],
+      "id": "672846ab-0a5a-4e33-9a9a-ac4f72990cf4",
+      "name": "OpenAI Chat Model2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node (JavaScript)\nconst items = $input.all();\n\nreturn items.map(item => {\n  const topic = item.json.Topic || \"\";\n  const keywords = item.json[\"Keywords or Hashtags (optional)\"] || \"\";\n  const link = item.json[\"Link (Optional)\"] || \"\";\n\n  // Merge into a single prompt\n  const prompt = `Topic: ${topic}\\nKeywords/Hashtags: ${keywords}\\nLink: ${link}`;\n\n  return {\n    json: {\n      topic,\n      keywords,\n      link,\n      prompt\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        3520
+      ],
+      "id": "f1b2bf02-4e21-4b6a-99a1-5f24efb2ff81",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    encodedPrompt: encodeURIComponent($input.first().json.prompt)\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        3520
+      ],
+      "id": "7260072e-bc92-4537-9ed6-b9f15d8bb59f",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "url": "=https://text.pollinations.ai/{{ $json.encodedPrompt }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "system",
+              "value": "=*You are an AI assistant that must always return output in strict JSON format. The response must never contain extra text, explanations, or formatting outside the JSON. The structure of the JSON must exactly follow this schema:  {   \"type\": \"object\",   \"properties\": {     \"name\": { \"type\": \"string\" },     \"description\": { \"type\": \"string\" },     \"platform_posts\": {       \"type\": \"object\",       \"properties\": {         \"LinkedIn\": {           \"type\": \"object\",           \"properties\": {             \"image_suggestion\": { \"type\": \"string\" },             \"post\": { \"type\": \"string\" },             \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"call_to_action\": { \"type\": \"string\" }           }         },         \"Instagram\": {           \"type\": \"object\",           \"properties\": {             \"image_suggestion\": { \"type\": \"string\" },             \"caption\": { \"type\": \"string\" },             \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"emojis\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"call_to_action\": { \"type\": \"string\" }           }         },         \"Facebook\": {           \"type\": \"object\",           \"properties\": {             \"post\": { \"type\": \"string\" },             \"hashtags\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },             \"call_to_action\": { \"type\": \"string\" },             \"image_suggestion\": { \"type\": \"string\" }           }         }       }     },     \"additional_notes\": { \"type\": \"string\" }   } }  Rules:  Always output a valid JSON object conforming to the schema.  Do not include markdown formatting (no triple backticks, no explanation).  All properties must exist, even if empty (\"\" for strings, [] for arrays).  The output must be machine-readable JSON only.*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        3536
+      ],
+      "id": "b90bb115-23e2-4ff2-a220-a436e7c8953b",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items array coming from previous node\n// Example: [{ json: { data: \"{...stringified JSON...}\" } }]\n\nconst results = [];\n\nfor (const item of items) {\n  try {\n    // Parse the stringified JSON inside data\n    const parsed = JSON.parse(item.json.data);\n\n    // Push the parsed JSON as a clean object\n    results.push({\n      json: parsed\n    });\n\n  } catch (error) {\n    // If parsing fails, return error\n    results.push({\n      json: {\n        error: \"Invalid JSON format\",\n        details: error.message,\n        original: item.json.data\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        3536
+      ],
+      "id": "944c4f56-f535-4156-8e3f-416c84f0f373",
+      "name": "Code in JavaScript6"
+    },
+    {
+      "parameters": {
+        "url": "=https://text.pollinations.ai/{{ $('Code in JavaScript4').item.json.prompt }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "system",
+              "value": "=Ultra-realistic 8K professional advertisement poster :: split composition :: Left side: a confident young woman, smiling warmly, symbolizing trust, sustainability, and clean energy future, modern outfit with eco-friendly tones, cinematic lighting, soft glow, professional corporate style, photorealistic details, sharp focus :: Right side: a futuristic smart home with sleek solar panels on the roof, shining under golden sunlight, panels glowing with innovation and high efficiency, elegant modern architecture, sustainable lifestyle, lens flare sunlight rays across clear blue sky :: background with subtle greenery and nature elements, balance of technology and environment :: Typography branding text: “Énergies France – Clean Energy for a Brighter Future” in elegant corporate font, premium design, inspiring, persuasive, eco-friendly branding, cinematic composition, award-winning ad style\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2064,
+        3648
+      ],
+      "id": "b49b4cb9-b3dc-495a-ad6f-f07589370cd9",
+      "name": "HTTP Request7"
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ $json.data }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "nologo",
+              "value": "true"
+            },
+            {
+              "name": "model",
+              "value": "nanobanana"
+            },
+            {
+              "name": "token",
+              "value": "gEieaNCMk-ZyNUvg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2272,
+        3648
+      ],
+      "id": "7b40c8af-7137-495f-912a-12b81d5a45ff",
+      "name": "HTTP Request8"
+    },
+    {
+      "parameters": {
+        "url": "=https://text.pollinations.ai/{{ $json.encodedPrompt }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "system",
+              "value": "=You are an expert email designer. Always produce only raw HTML (no surrounding text, no markdown, no explanation). Your single goal is to convert the given JSON input into a production-ready, email-safe HTML message that can be pasted directly into an email builder. Requirements you must follow exactly:  Parse the input JSON string provided by the user. If parsing fails, output a minimal valid HTML email that contains a short human-readable error message inside the body (still as HTML), nothing else.  The HTML must use a table-based layout with inline CSS only (no <style> blocks or external CSS).  The email container must be centered and have a max-width of 600px. Use width attributes on tables and inline max-width where supported.  Use email-safe fonts and fallbacks (e.g., font-family: Arial, Helvetica, sans-serif; and Georgia, serif as needed).  Use email-safe colors and keep contrast accessible. Do not reference external fonts or styles.  Create a clear header (title + description), then one card per platform (LinkedIn, Instagram, Facebook) displayed in stacked rows. Each platform card must show:  Platform name as a header,  image_suggestion (rendered as an <img> with the suggestion as alt text and a placeholder src like cid:placeholder-PLATFORM or empty src=\"\" so template engines can replace it),  The post content (post or caption),  A visible list of hashtags (comma-separated or inline badges),  emojis if present (for Instagram),  call_to_action as a prominent button (use table-button technique with a clickable <a> styled as a button; if CTA is empty, render a disabled-looking button placeholder).  If any expected fields are missing, still include the key in the card with an empty string or empty list display so callers can reliably map fields.  Keep the HTML self-contained (no external images or scripts). Use content-safe placeholders for images (src=\"\" or cid:). Use alt text from image_suggestion.  Ensure the markup is compatible with major email clients (Outlook, Gmail, Apple Mail). Use nested tables, cellpadding, cellspacing=\"0\", border=\"0\", and inline style for spacing. Avoid CSS shorthand that some clients may not support.  Produce semantic, well-formed HTML (doctype optional). Do not include any non-HTML output.  The only input you should read is the JSON provided by the user prompt variable {{ $json.data.toJsonString() }}."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2688,
+        3648
+      ],
+      "id": "36b489a9-bf49-4df6-99f5-1a1576db5d5e",
+      "name": "HTTP Request9"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    encodedPrompt: encodeURIComponent($input.first().json.data)\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2480,
+        3648
+      ],
+      "id": "4adf9fcf-285b-4fe4-b93f-542079a969a5",
+      "name": "Code in JavaScript7"
+    },
+    {
+      "parameters": {
+        "formTitle": "Social Media Content Generator",
+        "formDescription": "Generate and publish content across Instagram, LinkedIn, and Facebook",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Topic",
+              "placeholder": "Enter your post topic here",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Keywords or Hashtags (optional)",
+              "placeholder": "Include specific keywords or hashtags for your campaign"
+            },
+            {
+              "fieldLabel": "Link (Optional)",
+              "placeholder": "URL to include in your post"
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Generate & Publish Content"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1168,
+        512
+      ],
+      "id": "a5ed73f8-42ff-49a7-9b6a-654b9f58051b",
+      "name": "Content Form Trigger1",
+      "webhookId": "c97bc011-4e0f-4d8b-a166-7825948b5807"
+    }
+  ],
+  "connections": {
+    "Content Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Social Media Content Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JSON Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Social Media Content Generator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4 Mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Image Prompt Creator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Approval Email": {
+      "main": [
+        [
+          {
+            "node": "Check Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Approval": {
+      "main": [
+        [
+          {
+            "node": "Generate Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Image": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Instagram Post": {
+      "main": [
+        [
+          {
+            "node": "Merge All Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to Facebook": {
+      "main": [
+        [
+          {
+            "node": "Merge All Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge All Results": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Results": {
+      "main": [
+        [
+          {
+            "node": "Prepare Results Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Results Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Register Image Upload": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Image File": {
+      "main": [
+        [
+          {
+            "node": "Linkedin Image Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Linkedin Image Post": {
+      "main": [
+        [
+          {
+            "node": "Merge All Results",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Upload Image File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get UserID5": {
+      "main": [
+        [
+          {
+            "node": "Register Image Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Results Email": {
+      "main": [
+        [
+          {
+            "node": "Send Results Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prepare Results Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Results Message": {
+      "main": [
+        [
+          {
+            "node": "Telegram Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prepare Results Message",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Instagram Media2": {
+      "main": [
+        [
+          {
+            "node": "Publish Instagram Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Create Instagram Media2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get UserID5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Post to Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Send Approval Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Bot ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bot ID": {
+      "main": [
+        [
+          {
+            "node": "Get Img Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Image Gen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Image Gen",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Image Gen",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Gen": {
+      "main": [
+        [
+          {
+            "node": "Create Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Image": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Img Path": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Create Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Image Gen",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript6": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request8": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript7": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Form Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Content Form Trigger1": [
+      {
+        "json": {
+          "Topic": "Ultra-realistic 8K professional advertisement poster :: Left side: A confident young woman, smiling warmly, representing trust, sustainability, and clean energy. She looks modern, stylish, eco-friendly, with cinematic lighting and soft glow. :: Right side: A futuristic smart home with sleek solar panels on the roof, glowing under golden sunlight, panels shining with innovation and efficiency, symbolizing renewable energy. Typography branding text: “Énergies France – Clean Energy for a Brighter Future” :: Corporate, eco-friendly, futuristic ad style.",
+          "Keywords or Hashtags (optional)": "#SolarEnergy #CleanEnergy #GoGreen #RenewableEnergy #SmartHome #SustainableFuture",
+          "Link (Optional)": "https://energies-france.com/solar",
+          "submittedAt": "2025-10-03T20:25:15.174+05:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "versionId": "156e0d26-48eb-4f8a-8b8b-c9a5176ef97b",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-03T13:51:17.776Z",
+      "updatedAt": "2025-10-03T13:51:17.776Z",
+      "role": "workflow:owner",
+      "workflowId": "w6GiGoLBfrEQT8XU",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
