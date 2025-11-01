@@ -1,0 +1,802 @@
+{
+  "createdAt": "2025-10-11T17:59:32.579Z",
+  "updatedAt": "2025-10-11T17:59:45.982Z",
+  "id": "7EYvhAwc3LbIbMaz",
+  "name": "Sora 2 Video Generation",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        512,
+        544
+      ],
+      "id": "31d61e89-58fb-4111-83d4-665ad5a03e9d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1527349838,
+          "mode": "list",
+          "cachedResultName": "Sheet6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=1527349838"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        688,
+        528
+      ],
+      "id": "16a62fa8-92a4-4204-a2c1-4630b564c114",
+      "name": "Get Entry"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        624
+      ],
+      "id": "da44174e-3014-4025-a2b0-6a420c0117da",
+      "name": "Wait",
+      "webhookId": "070665bc-15b5-487d-ab0a-dc6c31361781"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1376,
+        416
+      ],
+      "id": "9b35216e-c2b9-4508-aa97-1a872ccf3d4e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1527349838,
+          "mode": "list",
+          "cachedResultName": "Sheet6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=1527349838"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get Entry').item.json.row_number }}",
+            "Status": "fail"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Aspect Ratio",
+              "displayName": "Aspect Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Quality",
+              "displayName": "Quality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Link",
+              "displayName": "Video Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1600,
+        432
+      ],
+      "id": "78877ee4-4c65-45b8-8309-3e47bb5c73fa",
+      "name": "Mark Status as Fail"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1527349838,
+          "mode": "list",
+          "cachedResultName": "Sheet6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=1527349838"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get Entry').item.json.row_number }}",
+            "Status": "completed",
+            "Video Link": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Aspect Ratio",
+              "displayName": "Aspect Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Quality",
+              "displayName": "Quality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Link",
+              "displayName": "Video Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1600,
+        240
+      ],
+      "id": "9d1da506-cdbd-4b5c-a11b-f2fb813e9fee",
+      "name": "Update row in sheet"
+    },
+    {
+      "parameters": {
+        "content": "# SORA 2 Text -> Video",
+        "height": 752,
+        "width": 1456
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        384,
+        176
+      ],
+      "id": "272999ed-93fc-449c-9e64-166708de3417",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1527349838,
+          "mode": "list",
+          "cachedResultName": "Sheet6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=1527349838"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2208,
+        528
+      ],
+      "id": "59358cef-77e5-4ca1-9485-1802f038cd3a",
+      "name": "Get Entry1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3120,
+        624
+      ],
+      "id": "b89f382e-2a0b-4873-90ff-fae5750f873a",
+      "name": "Wait1",
+      "webhookId": "070665bc-15b5-487d-ab0a-dc6c31361781"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2896,
+        416
+      ],
+      "id": "d26a1f02-0aef-4957-ba6e-43afacc9804b",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1527349838,
+          "mode": "list",
+          "cachedResultName": "Sheet6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=1527349838"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get Entry1').item.json.row_number }}",
+            "Status": "fail",
+            "Remark": "={{ $json.data.failMsg }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Image URL",
+              "displayName": "Image URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Aspect Ratio",
+              "displayName": "Aspect Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Quality",
+              "displayName": "Quality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Link",
+              "displayName": "Video Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Remark",
+              "displayName": "Remark",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3120,
+        432
+      ],
+      "id": "fafba15f-dd92-4bc3-bf9a-cfd07b8798b5",
+      "name": "Mark Status as Fail1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc",
+          "mode": "list",
+          "cachedResultName": "fahad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1527349838,
+          "mode": "list",
+          "cachedResultName": "Sheet6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hyyvmAZmflAGwHj7uJNvM0jZmw-o9HrFyXRmOYaKlzc/edit#gid=1527349838"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get Entry1').item.json.row_number }}",
+            "Status": "completed",
+            "Video Link": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Aspect Ratio",
+              "displayName": "Aspect Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Quality",
+              "displayName": "Quality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Link",
+              "displayName": "Video Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3120,
+        240
+      ],
+      "id": "a97e39a3-a4d4-4f3a-b57b-b2788482b9b8",
+      "name": "Update row in sheet1"
+    },
+    {
+      "parameters": {
+        "content": "# SORA 2 Image -> Video",
+        "height": 752,
+        "width": 1472,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        176
+      ],
+      "id": "a95393ef-9f5f-463d-8866-e9789be3f722",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sora-2-image-to-video\",\n  \"input\": {\n    \"prompt\": \"{{ $json['Video Prompt'] }}\",\n    \"image_urls\": [\n        \"{{ $json['Image URL'] }}\"\n    ],\n    \"aspect_ratio\": \"{{ $json['Aspect Ratio'] }}\",\n    \"quality\": \"{{ $json.Quality }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2432,
+        528
+      ],
+      "id": "d784d958-3560-4262-9f05-a44712006c4f",
+      "name": "Create Image to Video Task"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sora-2-text-to-video\",\n  \"input\": {\n    \"prompt\": \"{{ $json['Video Prompt'] }}\",\n    \"aspect_ratio\": \"{{ $json['Aspect Ratio'] }}\",\n    \"quality\": \"{{ $json['Quality'] }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        912,
+        528
+      ],
+      "id": "ec2bfec2-e20d-4455-9c90-23f9de1aeb61",
+      "name": "Create Text to Video Task"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId}}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer a2acd7d35597b7c145f978ac5c8fb252"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1152,
+        528
+      ],
+      "id": "1715e86a-0192-4a7b-b284-f888617819d8",
+      "name": "Query Text to video Task"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $json.data.taskId}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_API_KEY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2672,
+        528
+      ],
+      "id": "0b4810b5-e35e-4966-8d28-66d52364ed68",
+      "name": "Query Img to Video Task"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Entry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Entry": {
+      "main": [
+        [
+          {
+            "node": "Create Text to Video Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Query Text to video Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Entry1": {
+      "main": [
+        [
+          {
+            "node": "Create Image to Video Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Query Img to Video Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Image to Video Task": {
+      "main": [
+        [
+          {
+            "node": "Query Img to Video Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Text to Video Task": {
+      "main": [
+        [
+          {
+            "node": "Query Text to video Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Create Image to Video Task": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "1cc50a82f85323ed6e002065297dcb6f",
+            "recordId": "1cc50a82f85323ed6e002065297dcb6f"
+          }
+        }
+      }
+    ],
+    "Create Text to Video Task": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "6ddf6c6625f41fe48481c3a6903a6ece",
+            "recordId": "6ddf6c6625f41fe48481c3a6903a6ece"
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "d8c4713b-5f1f-43aa-bc6c-3c4e1f7b3722",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-11T17:59:32.579Z",
+      "updatedAt": "2025-10-11T17:59:32.579Z",
+      "role": "workflow:owner",
+      "workflowId": "7EYvhAwc3LbIbMaz",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
