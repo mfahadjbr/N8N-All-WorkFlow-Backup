@@ -1,0 +1,932 @@
+{
+  "createdAt": "2025-11-01T15:18:57.216Z",
+  "updatedAt": "2025-11-01T15:18:57.216Z",
+  "id": "WCkvUYGNsmChyRAY",
+  "name": "ugc sora 2 workflow linkedin",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Informations",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Url image produit"
+            },
+            {
+              "fieldLabel": "Ratio vidéo",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "portrait"
+                  },
+                  {
+                    "option": "landscape"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Ton idée"
+            },
+            {
+              "fieldLabel": "Nombre de vidéos voulu",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        384,
+        32
+      ],
+      "id": "448503be-a137-4df3-8dfe-3618e33f65e9",
+      "name": "Données d'entrée",
+      "webhookId": "28788aab-ca24-4666-b8fa-7a54675d8341"
+    },
+    {
+      "parameters": {
+        "content": "## Génération d'idées\n\n",
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "ecdf1967-27da-4a19-a5d7-6cdadfa8f8fd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Génération des vidéos\n",
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "3e2dd350-a0b3-4908-85ef-aa6a5da4f2fc",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        1184,
+        352
+      ],
+      "id": "93521b8b-72dd-4211-acee-91afeec02534",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Donne moi {{ $('Données d\\'entrée').item.json['Nombre de vidéos voulu'] }} idées de vidéos à générer pour Tiktok Shop à partir de l'instruction utilisateur :\n\n{{ $('Données d\\'entrée').item.json['Ton idée'] }}\n\nVoici la description de l'image produit :\n\n{{ $json.content }}\n\nVoici l'url de l'image : {{ $('Données d\\'entrée').item.json['Url image produit'] }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=A – Ask (Demande) :\n\nSuggérer des invites vidéo détaillées basées sur les indications de l’utilisateur — toujours en imitant le format, le ton et la structure d’une invite maîtresse fournie.\n\nSi aucun exemple n’est donné, utiliser l’idée de l’utilisateur pour générer une nouvelle invite dans un style cinématographique maison.\nLe nombre de sorties est défini par l’utilisateur.\n\nG – Guidance (Directives) :\n\nRôle : Directeur visuel ou artiste d’invites aligné sur la marque\nNombre de sorties : Tel que spécifié par l’utilisateur\n\nContraintes :\n\nToujours suivre le ton, la marque ou la direction de l’utilisateur.\n\nRespecter strictement le style, la longueur, la mise en forme et la cadence de toute invite maîtresse fournie.\n\nNe jamais utiliser de personnages, marques ou propriétés intellectuelles protégés par le droit d’auteur ou une marque déposée.\n\nToujours vérifier l’outil Sheet pour éviter les titres, légendes ou invites répétées. Ne pas répéter d’idées déjà présentes dans le Sheet.\n\nE – Examples (Exemples) :\n\nSuivre directement les indications de toute invite maîtresse fournie par l’utilisateur :\n\nFaire correspondre le rythme des phrases, la longueur et le vocabulaire visuel de l’exemple.\n\nReproduire exactement le ton, l’intensité cinématographique et la structure phrastique.\n\nSi aucune invite maîtresse n’est donnée, créer une scène vivante et immersive en utilisant une voix de type bande-annonce cinématographique.\n\nN – Notation (Notation) :\n\nFormat : JSON\nExemple de sortie :\n\n{\n  \"scenes\": [\n    {\n      \"Title\": \"Titre ici\",\n      \"Caption\": \"Courte légende avec emoji 😀 #sujet1 #sujet2 #sujet3 #sujet4 #populaire1 #populaire2 #populaire3 #populaire4 #tendance1 #tendance2 #tendance3 #tendance4\",\n      \"Prompt\": \"Invite ici\",\n      \"image_reference\": \"https://exemple.com/image.jpg\"\n    },\n    {\n      \"Title\": \"Titre ici\",\n      \"Caption\": \"Courte légende avec emoji 😀 #sujet1 #sujet2 #sujet3 #sujet4 #populaire1 #populaire2 #populaire3 #populaire4 #tendance1 #tendance2 #tendance3 #tendance4\",\n      \"Prompt\": \"Invite ici\",\n      \"image_reference\": \"https://exemple.com/image.jpg\"\n    }\n  ]\n}\n\nT – Tools (Outils) :\n\nTu as accès aux outils suivants, chacun étant clairement décrit :\n\nThink Tool : Toujours utiliser cet outil pour réfléchir et raisonner avant de répondre.\n\nSheet : Une feuille mémoire permettant de vérifier si une idée similaire a déjà été générée. Toujours la consulter pour éviter la répétition des titres, légendes ou invites.\n\n##Voici l'exemple d'un bon prompt :  \n\ndialogue : J’ai découvert ce chapeau en ligne et franchement c’est devenu mon accessoire préféré. Ce chapeau kaki en feutre va avec tout, il est stylé, confortable et ajoute tout de suite une touche chic et naturelle. Et cette petite plume, c’est vraiment le détail qui change tout.\n\\emotion : Confiance, enthousiasme léger, ton chaleureux et naturel\n\\voice_type : Voix féminine douce et claire, accent français, ton enjoué et sincère\n\\action : Elle ajuste le chapeau kaki sur sa tête, sourit à la caméra, tourne légèrement pour montrer le côté avec la plume, puis effleure le bord du chapeau en continuant de parler\n\\character : Femme brune aux cheveux ondulés, maquillage léger, tenue décontractée mais élégante, blouse blanche, pantalon beige, accessoires discrets\n\\setting : Terrasse de café ensoleillée, ambiance naturelle avec plantes et mobilier en bois clair, lumière douce de fin d’après-midi\n\\camera : Vidéo smartphone à la main, cadrage vertical, légères secousses naturelles, lumière authentique, rendu spontané et réaliste"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        32
+      ],
+      "id": "8cf33e6e-804d-4506-b6c5-c26916da1d19",
+      "name": "Agent Générateur d'idées"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scenes\": [\n    {\n      \"Title\": \"Titre ici\",\n      \"Caption\": \"Courte légende avec emoji 😀 #sujet1 #sujet2 #sujet3 #sujet4 #populaire1 #populaire2 #populaire3 #populaire4 #tendance1 #tendance2 #tendance3 #tendance4\",\n      \"Prompt\": \"Invite ici\",\n      \"image_reference\": \"https://exemple.com/image.jpg\"\n    },\n    {\n      \"Title\": \"Titre ici\",\n      \"Caption\": \"Courte légende avec emoji 😀 #sujet1 #sujet2 #sujet3 #sujet4 #populaire1 #populaire2 #populaire3 #populaire4 #tendance1 #tendance2 #tendance3 #tendance4\",\n      \"Prompt\": \"Invite ici\",\n      \"image_reference\": \"https://exemple.com/image.jpg\"\n    }\n  ]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        352
+      ],
+      "id": "ccffac33-0629-4649-8cd6-8f38a28656bb",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "=Analysez l’image donnée et déterminez si elle représente principalement un produit, un personnage, ou les deux.\n\nSi l’image est celle d’un produit, retournez l’analyse au format YAML avec les champs suivants :\n\nbrand_name : (Nom de la marque affiché sur l’image, si visible ou déductible)\ncolor_scheme :\n\nhex : (Code hexadécimal de chaque couleur dominante utilisée)\nname : (Nom descriptif de la couleur)\nfont_style : (Décrivez la famille ou le style de police utilisé : serif/sans-serif, gras/fin, etc.)\nvisual_description : (Une ou deux phrases résumant ce que l’on voit sur l’image, en ignorant l’arrière-plan)\n\nSi l’image est celle d’un personnage, retournez l’analyse au format YAML avec les champs suivants :\n\ncharacter_name : (Nom du personnage s’il est visible ou déductible)\ncolor_scheme :\n\nhex : (Code hexadécimal de chaque couleur dominante utilisée sur le personnage)\nname : (Nom descriptif de la couleur)\noutfit_style : (Description du style vestimentaire, des accessoires ou des caractéristiques notables)\nvisual_description : (Une ou deux phrases résumant l’apparence du personnage, en ignorant l’arrière-plan)\n\nNe retournez que le YAML. N’ajoutez aucune autre explication ni commentaire.\n\nSi c’est les deux, retournez les deux descriptions comme indiqué ci-dessus, au format YAML.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        800,
+        32
+      ],
+      "id": "e78e8204-71a6-4fae-9591-e55ded271d15",
+      "name": "Analyse de l'image"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY",
+          "mode": "list",
+          "cachedResultName": "Tiktok Shop UGC",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "UGCs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        192
+      ],
+      "id": "79e24407-e2dd-4d93-9db0-88d3d8d46938",
+      "name": "Déjà généré"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        32
+      ],
+      "id": "2c84dcfc-c798-4b51-89a4-839ab782201e",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        192
+      ],
+      "id": "184e50a1-b9be-49ac-a7b1-1f2a2bd9f130",
+      "name": "GPT 4o"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY",
+          "mode": "list",
+          "cachedResultName": "Tiktok Shop UGC",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "UGCs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TItre": "={{ $json.Title }}",
+            "Description": "={{ $json.Caption }}",
+            "Prompt": "={{ $json.Prompt }}",
+            "Url image": "={{ $json.image_reference }}",
+            "Taille": "={{ $('Données d\\'entrée').item.json['Ratio vidéo'] }}",
+            "Statut": "Idée Générée"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "TItre",
+              "displayName": "TItre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Taille",
+              "displayName": "Taille",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Url image",
+              "displayName": "Url image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Url vidéo générée",
+              "displayName": "Url vidéo générée",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Statut",
+              "displayName": "Statut",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1584,
+        32
+      ],
+      "id": "25027c96-8e8a-4216-93b9-e6e89ebbfe1e",
+      "name": "Enregistrement des idées"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 12
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        608
+      ],
+      "id": "73e89193-0d17-4e40-a1fb-049a8bf854c0",
+      "name": "Toutes les 12h"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY",
+          "mode": "list",
+          "cachedResultName": "Tiktok Shop UGC",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "UGCs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Statut",
+              "lookupValue": "Idée Générée"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        608
+      ],
+      "id": "93b68f22-f24c-473e-ada2-3dc0943a1ae0",
+      "name": "Prompt Génération"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1584,
+        816
+      ],
+      "id": "538e632d-79f1-4a1e-91e5-af5f26efb306",
+      "name": "Wait1",
+      "webhookId": "e40efe8f-2d03-42ce-a99e-facf146b8472"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY",
+          "mode": "list",
+          "cachedResultName": "Tiktok Shop UGC",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KEtzAyUOefMI1ncF9wqjDAq9BCkCLimN9YzMLHXmSuM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TItre": "={{ $('Prompt Génération').item.json.TItre }}",
+            "Statut": "Générée",
+            "Url vidéo générée": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}"
+          },
+          "matchingColumns": [
+            "TItre"
+          ],
+          "schema": [
+            {
+              "id": "TItre",
+              "displayName": "TItre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Taille",
+              "displayName": "Taille",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Url image",
+              "displayName": "Url image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Url vidéo générée",
+              "displayName": "Url vidéo générée",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Statut",
+              "displayName": "Statut",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1904,
+        736
+      ],
+      "id": "2b658959-6637-4a00-bb7d-2a76de55585a",
+      "name": "Ajout URL Vidéo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"model\": \"sora-2-image-to-video\",\n    \"input\": {\n      \"prompt\": \"{{ $('Prompt Génération').item.json.Prompt }}\",\n      \"image_urls\": [\n        \"{{ $json.data.downloadUrl }}\"\n      ],\n      \"aspect_ratio\": \"{{ $('Prompt Génération').item.json.Taille }}\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        608
+      ],
+      "id": "a5774e5b-7bb1-4bd4-93ce-090ff6547a61",
+      "name": "Création de la vidéo"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $json.data.taskId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1376,
+        608
+      ],
+      "id": "d2c12b6a-acf4-4b7a-acf4-1fd0f45888a4",
+      "name": "Récupérer Statut"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1584,
+        576
+      ],
+      "id": "b7fe2d37-7c04-49a4-8b6f-9c1302f2e06d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY",
+          "mode": "list",
+          "cachedResultName": "Tiktok Shop UGC",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "UGCs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FWpCyeCYKYEOGnqogLxLqgCW9jb_JyuNTNRdVr0d1WY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TItre": "={{ $('Prompt Génération').item.json.TItre }}",
+            "Statut": "Erreur"
+          },
+          "matchingColumns": [
+            "TItre"
+          ],
+          "schema": [
+            {
+              "id": "Statut",
+              "displayName": "Statut",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TItre",
+              "displayName": "TItre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Modèle vidéo IA",
+              "displayName": "Modèle vidéo IA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dimensions",
+              "displayName": "Dimensions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1904,
+        560
+      ],
+      "id": "cd58b2fa-486a-489d-a8a9-27a6a97a1c5c",
+      "name": "Erreur"
+    },
+    {
+      "parameters": {
+        "content": "## Sora 2 / Image to video",
+        "width": 272,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "a954e263-7746-4b88-a2d3-b726ce8d289f",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://kieai.redpandaai.co/api/file-stream-upload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "uploadPath",
+              "value": "images/user-uploads"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $json.TItre }}.jpg"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        976,
+        608
+      ],
+      "id": "a1e57e7c-da65-4ea5-8fe9-1ec3b9cc0d5f",
+      "name": "Upload de l'image sur Kie AI"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Url image'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        784,
+        608
+      ],
+      "id": "47a7df27-5c54-4e00-a89e-de2862b5c116",
+      "name": "Téléchargement de l'image"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Url image produit'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        32
+      ],
+      "id": "efea79a3-48fa-4c1b-9acc-2f883d0611c7",
+      "name": "Téléchargement de l'image1"
+    }
+  ],
+  "connections": {
+    "Données d'entrée": {
+      "main": [
+        [
+          {
+            "node": "Téléchargement de l'image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Générateur d'idées",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Générateur d'idées": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent Générateur d'idées",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyse de l'image": {
+      "main": [
+        [
+          {
+            "node": "Agent Générateur d'idées",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Déjà généré": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Générateur d'idées",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Enregistrement des idées",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT 4o": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Générateur d'idées",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Toutes les 12h": {
+      "main": [
+        [
+          {
+            "node": "Prompt Génération",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt Génération": {
+      "main": [
+        [
+          {
+            "node": "Téléchargement de l'image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Récupérer Statut",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Création de la vidéo": {
+      "main": [
+        [
+          {
+            "node": "Récupérer Statut",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload de l'image sur Kie AI": {
+      "main": [
+        [
+          {
+            "node": "Création de la vidéo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Téléchargement de l'image": {
+      "main": [
+        [
+          {
+            "node": "Upload de l'image sur Kie AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Téléchargement de l'image1": {
+      "main": [
+        [
+          {
+            "node": "Analyse de l'image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "19fe52b3-4ce9-4deb-adda-e3d134bf24e1",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-11-01T15:18:57.216Z",
+      "updatedAt": "2025-11-01T15:18:57.216Z",
+      "role": "workflow:owner",
+      "workflowId": "WCkvUYGNsmChyRAY",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
