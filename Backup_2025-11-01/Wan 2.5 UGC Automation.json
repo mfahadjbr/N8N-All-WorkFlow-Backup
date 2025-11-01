@@ -1,0 +1,613 @@
+{
+  "createdAt": "2025-10-17T02:45:11.153Z",
+  "updatedAt": "2025-10-17T02:45:11.153Z",
+  "id": "KYRlKT6xc03WRh6v",
+  "name": "Wan 2.5 UGC Automation",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "099f7309-285a-470b-bc6e-165f12a50a90",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -928,
+        240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "api_token",
+              "name": "api_token",
+              "type": "string",
+              "value": "=YOUR_REPLICATE_API"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8489c228-398a-4748-88c5-a39ee0a292fe",
+      "name": "Set API Token",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -560,
+        272
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "8106aec4-5176-4b04-a082-921f4a0aae9a",
+      "name": "Wait 5s",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        336,
+        288
+      ],
+      "webhookId": "d2c4ca16-0eb2-45b4-8a2d-eec2f99df89c",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://api.replicate.com/v1/predictions/{{ $('Create Video').item.json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Set API Token').item.json.api_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "f8be789c-dbb9-4195-8fe5-44ef8ada4e3e",
+      "name": "Check Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        528,
+        288
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 1,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c93d7ba1-0ef9-4087-aa10-389cb2a2c6bd",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "succeeded"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fa106162-c72f-4777-8737-016ba29a3549",
+      "name": "Is Complete?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        768,
+        208
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 1,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "d1bfd044-3a07-4c18-b55f-72d192596139",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "failed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "de250930-96f1-4daa-a442-2575d1a8700d",
+      "name": "Has Failed?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1024,
+        336
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "success-response",
+              "name": "response",
+              "type": "object",
+              "value": "={{ { success: true, result_url: $json.output, prediction_id: $json.id, status: $json.status, message: 'Other generated successfully' } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "56e649a7-11c0-4a93-af27-b6aedc2cb85f",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1008,
+        96
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "error-response",
+              "name": "response",
+              "type": "object",
+              "value": "={{ { success: false, error: $json.error || 'Other generation failed', prediction_id: $json.id, status: $json.status, message: 'Failed to generate other' } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "858d3575-1bb8-4491-9d87-6922dfd195b3",
+      "name": "Error Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1520,
+        560
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "final-result",
+              "name": "final_result",
+              "type": "object",
+              "value": "={{ $json.response }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0807cee7-d8db-4adb-b315-0271f1d08af9",
+      "name": "Display Result",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1824,
+        240
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log generation details for monitoring\nconst data = $input.all()[0].json;\n\nconsole.log('digitalhera/heranathalie Request:', {\n  timestamp: new Date().toISOString(),\n  prediction_id: data.id,\n  model_type: 'other'\n});\n\nreturn $input.all();"
+      },
+      "id": "bd6b64ed-48bd-4525-b02f-0204b7cadbda",
+      "name": "Log Request",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        336,
+        96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "=======================================\n        IMAGE TO VIDEO GENERATOR\n=======================================\nFor any questions or support, please contact:\n    Yaron@nofluff.online\n\nExplore more tips and tutorials here:\n   - YouTube: https://www.youtube.com/@YaronBeen/videos\n   - LinkedIn: https://www.linkedin.com/in/yaronbeen/\n\n🚀 Need a scalable solution for generating \n   and automating media buying?\n   Check out ROASPIG.com\n=======================================",
+        "height": 432,
+        "width": 804,
+        "color": 4
+      },
+      "id": "7dff123b-15b9-42cb-8c22-89d0ae6ceedd",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1792,
+        112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 🎬 **WAN-VIDEO 2.5 - IMAGE TO VIDEO WORKFLOW**\n\n**🔥 Powered by Replicate API and n8n Automation**\n\n---\n\n### 📝 **Model Overview**\n\n- **Owner**: wan-video\n- **Model**: wan-2.5-i2v\n- **Type**: Image to Video Generation\n- **API Endpoint**: https://api.replicate.com/v1/models/wan-video/wan-2.5-i2v/predictions\n\n**🎯 What This Model Does:**\nTransforms static images into dynamic videos using AI. Perfect for creating promotional videos, social media content, and animated presentations from single images.\n\n---\n\n### 📋 **Parameter Reference**\n\n**🔴 Required Parameters:** \n- **image** (string): Input image URL to animate\n- **prompt** (string): Description of the desired video motion and action\n\n**🔵 Optional Parameters:** \n- **seed** (integer): Random seed for reproducible generation\n- **num_frames** (integer): Number of frames to generate (affects video length)\n- **guidance_scale** (number): How closely to follow the prompt (7-15 typical)\n- **num_inference_steps** (integer): Quality vs speed tradeoff (20-50 typical)\n- *Additional parameters available in API documentation*\n\n---\n\n### 🔧 **Workflow Components Explained**\n\n**🎯 Manual Trigger**\n- Starts the workflow execution\n- Click to begin video generation process\n\n**🔐 Set API Token** \n- Configures your Replicate API authentication\n- Replace with your actual Replicate API token\n- Essential for accessing the wan-video model\n\n**⚙️ Add Seed Image and Prompt**\n- Sets the input image URL and video prompt\n- Properly formats the prompt to handle quotes\n- Pre-configured with AG1 marketing video example\n\n**🚀 Create Video**\n- Sends the generation request to Replicate API\n- Uses wan-video/wan-2.5-i2v model\n- Returns a prediction ID for status tracking\n\n**⏳ Wait & Status Checking Loop**\n- Waits 5 seconds then checks prediction status\n- Continues checking until completion or failure\n- Implements intelligent retry logic with 10-second delays\n\n**✅ Success/Error Handling**\n- Routes successful completions to success response\n- Handles failures gracefully with error details\n- Returns structured JSON response with video URL or errors\n\n**📊 Logging & Monitoring**\n- Logs all requests for debugging and monitoring\n- Tracks timestamps and prediction IDs\n- Helps identify issues during development\n\n---\n\n### 🌟 **Key Benefits**\n\n- **🎬 AI Video Generation**: Transform static images into engaging videos\n- **📱 Perfect for Social Media**: Create dynamic content for TikTok, Instagram, YouTube\n- **🔄 Automated Workflow**: Handles the complete generation pipeline automatically\n- **🛡️ Error Resilience**: Built-in retry logic and comprehensive error handling\n- **📈 Production Ready**: Includes logging, monitoring, and structured responses\n- **⚡ Efficient Processing**: Optimized API calls with intelligent status checking\n\n---\n\n### 🚀 **Quick Start Instructions**\n\n1. **🔑 Get Your API Key**\n   - Sign up at https://replicate.com\n   - Navigate to your account settings\n   - Copy your API token\n\n2. **🔧 Configure the Workflow**\n   - Replace the API token in \"Set API Token\" node\n   - Update image URL in \"Add Seed Image and Prompt\" node\n   - Customize the prompt for your desired video motion\n\n3. **▶️ Execute the Workflow**\n   - Click the 'Manual Trigger' to start\n   - Monitor the execution in the n8n interface\n   - Check logs for detailed execution information\n\n4. **📥 Get Your Results**\n   - Successful generations return a URL to your video\n   - Download the MP4 file from the provided URL\n   - Video typically ready in 30-120 seconds\n\n---\n\n### 🔍 **Troubleshooting Guide**\n\n**Common Issues:**\n- **Invalid API Token**: Ensure your Replicate token is valid and has sufficient credits\n- **Image URL Issues**: Verify the image URL is publicly accessible\n- **Prompt Formatting**: Use single quotes inside prompts to avoid JSON errors\n- **Generation Timeout**: Video generation can take 1-3 minutes - be patient\n\n**Best Practices:**\n- Use high-quality input images (minimum 512x512)\n- Write detailed, specific prompts for better results\n- Test with shorter prompts first, then add complexity\n- Keep API tokens secure - use n8n credentials feature\n- Monitor your Replicate usage and billing\n\n---\n\n### 📝 **Example Use Cases**\n\n- **Product Demos**: Animate product images with usage demonstrations\n- **Social Media Ads**: Create eye-catching video ads from product photos\n- **Story Telling**: Bring illustrations to life with motion\n- **Marketing Content**: Transform static campaigns into dynamic videos\n- **Educational Content**: Animate diagrams and infographics\n\n---\n\n**🔗 Additional Resources:**\n- Model Documentation: https://replicate.com/wan-video/wan-2.5-i2v\n- Replicate API Docs: https://replicate.com/docs\n- n8n Documentation: https://docs.n8n.io\n\n---",
+        "height": 1958,
+        "width": 589,
+        "color": 4
+      },
+      "id": "dbd70786-8552-4d4c-aacc-8c9c6064c5c1",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1824,
+        608
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/v1/models/wan-video/wan-2.5-i2v/predictions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer  {{ $('Set API Token').item.json.api_token }}"
+            },
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"image\": \"{{ $json.Seed_image }}\",\n    \"prompt\": \"{{ $json.Prompt }}\"\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "2fbf18fd-685d-4c57-b64f-d8ccb13008ca",
+      "name": "Create Video",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        0,
+        272
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "924b6590-46a4-4ad5-b58d-0804991c633e",
+              "name": "Seed_image",
+              "value": "https://replicate.delivery/pbxt/NllgibhEDDtjRmPSLSDvXnkiobQCJDeoI4PwWdJ0bdXIeZbP/AG1_1.png",
+              "type": "string"
+            },
+            {
+              "id": "76ad3bd8-da89-413b-b5ab-f031d4d221f4",
+              "name": "Prompt",
+              "value": "5-Second AG1 'Game Changer' Video Prompt Scene Setup: Woman in modern kitchen (white cropped hoodie, olive green leggings), holding AG1 package with both hands at chest level, green smoothie in blender visible to the side Action (0-5 seconds): 0-1 sec: Start with her looking down at the AG1 package 1-2 sec: She looks up at camera with growing smile (like discovering something amazing) 2-4 sec: Holds package up slightly higher, direct eye contact: 'This is an absolute GAME changer!' 4-5 sec: Quick confident nod while bringing package back to chest level, maintaining smile Camera: Static shot or very subtle push-in Frame from waist up (like reference photo) Bright, natural lighting Kitchen background slightly blurred for focus on her and product Energy: Authentic excitement, like she's sharing a secret with her best friend - natural, not overly polished",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -256,
+        288
+      ],
+      "id": "34b3f6ae-af93-4fb9-9444-41bde52ec0f3",
+      "name": "Add Seed Image and Prompt"
+    },
+    {
+      "parameters": {
+        "content": "Add Your Replicate API",
+        "height": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        176
+      ],
+      "id": "0ca06727-f799-4e95-932a-f5f284fbc431",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "1- Add a link to your Seed image. If you dont have one, you can generate it using OpenAI or Nano Banana\n\n\n\n\n",
+        "height": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        176
+      ],
+      "id": "d6d0e0e4-d5a1-480e-b274-fefe1fafa5ca",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n## 📝 **PROMPT WRITING GUIDELINES**\n\n### ❌ **AVOID These Characters:**\n- Double quotes (`\"`) - Will break JSON parsing\n- Backslashes (`\\`) - Can cause escape sequence issues\n- Line breaks/Enter key - Makes JSON invalid\n",
+        "height": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        512
+      ],
+      "id": "af3a838b-5af5-4c19-97af-fa06e7e15a12",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -832,
+        1392
+      ],
+      "id": "9b1115b8-4c88-4456-8774-49be937d41b3",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "content": "Connect this node to your storage in order to save the predictions\n",
+        "height": 432
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1776,
+        112
+      ],
+      "id": "c9c395ba-1223-4a85-9644-15bce2af2ed8",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Batch Processing Guide\n\n## 🔄 Optional: Generate Multiple Videos\n\nConnect the \"Batch Process Videos\" node after \"Set API Token\" for bulk generation.\n\n### Three Options:\n\n**Option 1: Same Image + Same Prompt = Multiple Videos**\n- Get different variations from identical inputs\n- Example: 1 product photo → 5 unique videos\n\n**Option 2: Same Image + Different Prompts = Multiple Videos**\n- Test different animations on one image  \n- Example: 1 photo with 10 different prompts\n\n**Option 3: Different Images + Different Prompts = Multiple Videos**\n- Bulk create unique content\n- Example: 50 products, each with custom prompt",
+        "height": 752,
+        "width": 544
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        848
+      ],
+      "id": "c814982f-908b-432d-8b72-a3d307f80538",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "amount": 90,
+        "unit": "seconds"
+      },
+      "id": "b74d33cb-9342-44f1-855c-c11ec65be9e1",
+      "name": "Wait 90s",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        896,
+        544
+      ],
+      "webhookId": "51a05aef-e220-406d-8c2c-e59c82c3e26e",
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set API Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set API Token": {
+      "main": [
+        [
+          {
+            "node": "Add Seed Image and Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5s": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Is Complete?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Complete?": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has Failed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Failed?": {
+      "main": [
+        [
+          {
+            "node": "Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 90s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success Response": {
+      "main": [
+        [
+          {
+            "node": "Display Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Response": {
+      "main": [
+        [
+          {
+            "node": "Display Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Request": {
+      "main": [
+        [
+          {
+            "node": "Wait 5s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video": {
+      "main": [
+        [
+          {
+            "node": "Log Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Seed Image and Prompt": {
+      "main": [
+        [
+          {
+            "node": "Create Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 90s": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "89c0d4c0-1bdf-4bb8-952a-c62356fad1c7",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-10-17T02:45:11.153Z",
+      "updatedAt": "2025-10-17T02:45:11.153Z",
+      "role": "workflow:owner",
+      "workflowId": "KYRlKT6xc03WRh6v",
+      "projectId": "X5HfRiTZREe3eBAa"
+    }
+  ],
+  "tags": []
+}
